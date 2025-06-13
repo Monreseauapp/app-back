@@ -140,8 +140,9 @@ jobs:
       - name: Run Snyk security scan
         uses: snyk/actions/node@v3
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}     with:
-          args: --severity-threshold=high --all-projects
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}     
+          with:
+            args: --severity-threshold=high --all-projects
         continue-on-error: true
 
   docker:
