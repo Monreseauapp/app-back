@@ -1,0 +1,88 @@
+name: PR Size Check
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  pr-size:
+    name: 📏 Check PR Size
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR size
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+            });
+
+            let additions = 0;
+            let deletions = 0;
+            let changedFiles = files.length;
+
+            files.forEach(file => {
+              additions += file.additions;
+              deletions += file.deletions;
+            });
+
+            const totalChanges = additions + deletions;
+            let sizeLabel = '';
+            let message = '';
+
+            if (totalChanges < 100) {
+              sizeLabel = 'size: XS';
+              message = '✅ Small PR - Easy to review!';
+            } else if (totalChanges < 300) {
+              sizeLabel = 'size: S';
+              message = '✅ Small-Medium PR - Good size for review';
+            } else if (totalChanges < 500) {
+              sizeLabel = 'size: M';
+              message = '⚠️ Medium PR - Consider splitting if possible';
+            } else if (totalChanges < 1000) {
+              sizeLabel = 'size: L';
+              message = '⚠️ Large PR - Please consider splitting into smaller PRs';
+            } else {
+              sizeLabel = 'size: XL';
+              message = '🚨 Extra Large PR - This should definitely be split into smaller PRs';
+            }
+
+            // Remove existing size labels
+            const existingLabels = pr.labels.filter(label => !label.name.startsWith('size:'));
+            const newLabels = [...existingLabels.map(l => l.name), sizeLabel];
+
+            await github.rest.issues.setLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              labels: newLabels
+            });
+
+            // Add comment
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: `## 📊 PR Size Analysis
+
+            **Files changed:** ${changedFiles}
+            **Lines added:** ${additions}
+            **Lines deleted:** ${deletions}
+            **Total changes:** ${totalChanges}
+
+            ${message}
+
+            <details>
+            <summary>📋 PR Size Guidelines</summary>
+
+            - **XS (< 100 lines):** Perfect size for quick reviews
+            - **S (100-300 lines):** Good size, easy to review
+            - **M (300-500 lines):** Acceptable, but consider splitting
+            - **L (500-1000 lines):** Large, should be split when possible
+            - **XL (> 1000 lines):** Too large, please split into smaller PRs
+
+            </details>`
+            });
