@@ -7,7 +7,7 @@ on:
     branches: [master, develop]
 
 env:
-  NODE_VERSION: '18.x'
+  NODE_VERSION: '22.x'
   POSTGRES_DB: test_db
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
@@ -107,7 +107,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm i
+        run: npm ci
 
       - name: Build application
         run: npm run build
