@@ -38,7 +38,7 @@ jobs:
       - name: TypeScript type check
         run: npm run type-check
 
-    codeql-analysis:
+  codeql-analysis:
     name: CodeQL Analysis
     runs-on: ubuntu-latest
 
