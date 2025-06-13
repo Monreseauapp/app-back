@@ -138,13 +138,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Install complexity analysis tools
-        run: yarn add --dev eslint-plugin-complexity plato
+        run: npm install --save-dev eslint-plugin-complexity plato
 
       - name: Run complexity analysis
         run: |
