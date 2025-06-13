@@ -2,7 +2,7 @@ name: Branch Protection
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [master, develop]
 
 jobs:
   enforce-branch-protection:
@@ -15,11 +15,11 @@ jobs:
         with:
           script: |
             const branch = context.ref.replace('refs/heads/', '');
-            
+
             if (branch === 'main') {
               core.setFailed('❌ Direct pushes to main branch are not allowed! Please create a PR.');
             }
-            
+
             if (branch === 'develop' && context.actor !== 'github-actions[bot]') {
               const { data: pr } = await github.rest.pulls.list({
                 owner: context.repo.owner,
