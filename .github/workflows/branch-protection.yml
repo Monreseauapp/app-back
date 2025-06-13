@@ -18,7 +18,7 @@ jobs:
 
             if (branch === 'master') {
               const core = require('@actions/core');
-              core.setFailed('❌ Direct pushes to main branch are not allowed! Please create a PR.');          }
+              core.setFailed('❌ Direct pushes to master branch are not allowed! Please create a PR.');          }
 
             if (branch === 'develop' && context.actor !== 'github-actions[bot]') {
               const { data: pr } = await github.rest.pulls.list({
