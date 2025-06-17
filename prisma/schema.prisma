@@ -90,6 +90,7 @@ model User {
   lastName                 String            @db.VarChar(50)
   firstName                String            @db.VarChar(50)
   email                    String            @unique @db.VarChar(255)
+  photoUrl                 String?           @db.VarChar(255)
   jobTitle                 String?           @db.VarChar(50)
   address                  String            @db.VarChar(255)
   postalCode               Int
@@ -138,6 +139,8 @@ model Company {
   phone              String              @unique @db.VarChar(12)
   password           String              @db.VarChar(255)
   website            String?             @db.VarChar(255)
+  photoUrl           String?             @db.VarChar(255)
+  description        String?             @db.VarChar(255)
   linkedin           String?             @db.VarChar(255)
   subscriptionId     String              @unique
   ownerId            String              @unique
