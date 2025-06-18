@@ -8,6 +8,9 @@ import { CompanyModule } from './company/company.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { RecommandationsModule } from './recommandations/recommandations.module';
 import { ModelModule } from './project/model/model.module';
+import { RgpdModule } from './rgpd/rgpd.module';
+import { InvoiceModule } from './invoice/invoice.module';
+import { PaymentMethodModule } from './payment-method/payment-method.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { ReviewModule } from './review/review.module';
 import { CompanyProjectModule } from './company-project/company-project.module';
@@ -27,6 +30,9 @@ import { ModelModule } from './project/model/model.module';
     CompanyProjectModule,
     ReviewModule,
     TransactionModule,
+    PaymentMethodModule,
+    InvoiceModule,
+    RgpdModule,
   ],
   controllers: [AppController],
   providers: [AppService],
