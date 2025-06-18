@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DatabaseService } from '../database/database.service';
+import { DatabaseService } from 'src/database/database.service';
 import { Prisma } from 'generated/prisma';
 
 @Injectable()
@@ -24,9 +24,9 @@ export class CompanyService {
 
   update(id: string, updateCompanyDto: Prisma.CompanyUpdateInput) {
     return this.databaseService.company.update({
-        where: { id },
-        data: updateCompanyDto,
-      });
+      where: { id },
+      data: updateCompanyDto,
+    });
   }
 
   remove(id: string) {

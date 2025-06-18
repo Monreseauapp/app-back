@@ -1,14 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { JobDomainService } from './job-domain.service';
-import { CreateJobDomainDto } from './dto/create-job-domain.dto';
-import { UpdateJobDomainDto } from './dto/update-job-domain.dto';
+import { Prisma } from 'generated/prisma';
 
 @Controller('job-domain')
 export class JobDomainController {
   constructor(private readonly jobDomainService: JobDomainService) {}
 
   @Post()
-  create(@Body() createJobDomainDto: CreateJobDomainDto) {
+  create(@Body() createJobDomainDto: Prisma.JobDomainCreateInput) {
     return this.jobDomainService.create(createJobDomainDto);
   }
 
@@ -19,16 +26,19 @@ export class JobDomainController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.jobDomainService.findOne(+id);
+    return this.jobDomainService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateJobDomainDto: UpdateJobDomainDto) {
-    return this.jobDomainService.update(+id, updateJobDomainDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateJobDomainDto: Prisma.JobDomainUpdateInput,
+  ) {
+    return this.jobDomainService.update(id, updateJobDomainDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.jobDomainService.remove(+id);
+    return this.jobDomainService.remove(id);
   }
 }
