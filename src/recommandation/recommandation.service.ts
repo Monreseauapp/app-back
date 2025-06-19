@@ -34,6 +34,12 @@ export class RecommandationService {
     });
   }
 
+  findByCompanyId(companyId: string) {
+    return this.databaseService.recommandation.findMany({
+      where: { companyId },
+    });
+  }
+
   update(
     id: string,
     updateRecommandationDto: Prisma.RecommandationUpdateInput,

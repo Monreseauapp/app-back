@@ -39,6 +39,10 @@ export class RecommandationController {
     return this.recommandationService.findByInitiatorId(initiatorId);
   }
 
+  @Get('company/:companyId')
+  findByCompanyId(@Param('companyId') companyId: string) {
+    return this.recommandationService.findByCompanyId(companyId);
+  }
   @Patch(':id')
   update(
     @Param('id') id: string,
