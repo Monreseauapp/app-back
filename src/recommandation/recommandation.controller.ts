@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { RecommandationService } from './recommandation.service';
 import { Prisma } from 'generated/prisma';
 
@@ -22,7 +30,10 @@ export class RecommandationController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRecommandationDto: Prisma.RecommandationUpdateInput) {
+  update(
+    @Param('id') id: string,
+    @Body() updateRecommandationDto: Prisma.RecommandationUpdateInput,
+  ) {
     return this.recommandationService.update(id, updateRecommandationDto);
   }
 

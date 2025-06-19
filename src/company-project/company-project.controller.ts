@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CompanyProjectService } from './company-project.service';
 import { Prisma } from 'generated/prisma';
 
@@ -19,7 +27,7 @@ export class CompanyProjectController {
   @Get(':projectId/:companyId')
   findOne(
     @Param('projectId') projectId: string,
-    @Param('companyId') companyId: string
+    @Param('companyId') companyId: string,
   ) {
     return this.companyProjectService.findOne(projectId, companyId);
   }
@@ -28,15 +36,19 @@ export class CompanyProjectController {
   update(
     @Param('projectId') projectId: string,
     @Param('companyId') companyId: string,
-    @Body() updateCompanyProjectDto: Prisma.CompanyProjectUpdateInput
+    @Body() updateCompanyProjectDto: Prisma.CompanyProjectUpdateInput,
   ) {
-    return this.companyProjectService.update(projectId, companyId, updateCompanyProjectDto);
+    return this.companyProjectService.update(
+      projectId,
+      companyId,
+      updateCompanyProjectDto,
+    );
   }
 
   @Delete(':projectId/:companyId')
   remove(
     @Param('projectId') projectId: string,
-    @Param('companyId') companyId: string
+    @Param('companyId') companyId: string,
   ) {
     return this.companyProjectService.remove(projectId, companyId);
   }

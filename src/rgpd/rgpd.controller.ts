@@ -1,7 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { RgpdService } from './rgpd.service';
 import { Prisma } from 'generated/prisma';
-
 
 @Controller('rgpd')
 export class RgpdController {
@@ -9,7 +16,6 @@ export class RgpdController {
 
   @Post()
   create(@Body() createRgpdDto: Prisma.RGPDCreateInput) {
-
     return this.rgpdService.create(createRgpdDto);
   }
 
@@ -24,7 +30,10 @@ export class RgpdController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRgpdDto: Prisma.RGPDUpdateInput) {
+  update(
+    @Param('id') id: string,
+    @Body() updateRgpdDto: Prisma.RGPDUpdateInput,
+  ) {
     return this.rgpdService.update(id, updateRgpdDto);
   }
 

@@ -22,7 +22,10 @@ export class RecommandationService {
     });
   }
 
-  update(id: string, updateRecommandationDto: Prisma.RecommandationUpdateInput) {
+  update(
+    id: string,
+    updateRecommandationDto: Prisma.RecommandationUpdateInput,
+  ) {
     return this.databaseService.recommandation.update({
       where: { id },
       data: updateRecommandationDto,

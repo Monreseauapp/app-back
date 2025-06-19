@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PaymentMethodService } from './payment-method.service';
 import { Prisma } from 'generated/prisma';
 
@@ -22,7 +30,10 @@ export class PaymentMethodController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaymentMethodDto: Prisma.PaymentMethodUpdateInput) {
+  update(
+    @Param('id') id: string,
+    @Body() updatePaymentMethodDto: Prisma.PaymentMethodUpdateInput,
+  ) {
     return this.paymentMethodService.update(id, updatePaymentMethodDto);
   }
 
