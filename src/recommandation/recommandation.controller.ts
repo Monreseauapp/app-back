@@ -43,7 +43,6 @@ export class RecommandationController {
   findByCompanyId(@Param('companyId') companyId: string) {
     return this.recommandationService.findByCompanyId(companyId);
   }
-
   @Patch(':id')
   update(
     @Param('id') id: string,
