@@ -96,7 +96,7 @@ model User {
   postalCode               Int
   city                     String            @db.VarChar(50)
   createdAt                DateTime          @default(now())
-  updatedAt                DateTime          @updatedAt
+  updatedAt                DateTime          @updatedAt @default(now())
   lastLogin                DateTime?
   phone                    String            @unique @db.VarChar(12)
   password                 String            @db.VarChar(255)
@@ -108,8 +108,8 @@ model User {
   consentMarketing        Boolean           @default(false)
   jobDomain                JobDomain         @relation(fields: [domainId], references: [id])
   company                  Company?          @relation(fields: [companyId], references: [id])
-  recommendationsInitiated Recommandations[] @relation("RecoInitiateur")
-  recommendationsReceived  Recommandations[] @relation("RecoDestinataire")
+  recommendationsInitiated Recommandation[] @relation("RecoInitiateur")
+  recommendationsReceived  Recommandation[] @relation("RecoDestinataire")
   projects                 Project[]
   payments                 PaymentMethod[]
   reviews                  Review[]
@@ -132,7 +132,7 @@ model Company {
   postalCode         Int
   city               String              @db.VarChar(50)
   createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
+  updatedAt          DateTime            @updatedAt @default(now())
   lastLogin          DateTime
   recommendationRate String?             @db.VarChar(50)
   email              String              @unique @db.VarChar(50)
@@ -142,12 +142,12 @@ model Company {
   photoUrl           String?             @db.VarChar(255)
   description        String?             @db.VarChar(255)
   linkedin           String?             @db.VarChar(255)
-  subscriptionId     String              @unique
+  subscriptionId     String?              @unique
   ownerId            String              @unique
   retentionDate     DateTime
-  Subscription       Subscription        @relation("CompanySubscription", fields: [subscriptionId], references: [id])
+  Subscription       Subscription?        @relation("CompanySubscription", fields: [subscriptionId], references: [id])
   users              User[]
-  recommendations    Recommandations[]
+  recommendations    Recommandation[]
   enterpriseProjects CompanyProject[]
   reviews            Review[]
 }
@@ -162,7 +162,7 @@ model Subscription {
   cancelledDate DateTime?
   retentionDate DateTime?
   createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
+  updatedAt     DateTime          @updatedAt @default(now())
   companyId     String?           @unique
 
   Company       Company?          @relation("CompanySubscription")
@@ -170,10 +170,10 @@ model Subscription {
   invoices      Invoice[]
 }
 
-model Recommandations {
+model Recommandation {
   id           String    @id @default(cuid())
   createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  updatedAt    DateTime  @updatedAt @default(now())
   priority     Int       @default(0)
   firstName    String    @db.VarChar(50)
   lastName     String    @db.VarChar(50)
@@ -200,7 +200,7 @@ model Recommandations {
 model Project {
   id             String           @id @default(cuid())
   createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  updatedAt      DateTime         @updatedAt @default(now())
   name           String           @db.VarChar(50)
   description    String?          @db.VarChar(255)
   startDate      DateTime?
@@ -219,7 +219,7 @@ model Project {
 
 model CompanyProject {
   createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
+  updatedAt          DateTime           @updatedAt @default(now())
   projectId          String
   companyId          String
   retentionDate     DateTime?
@@ -233,7 +233,7 @@ model CompanyProject {
 model Review {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
   rating    Int      @default(0)
   comment   String?  @db.VarChar(255)
   userId    String
@@ -252,7 +252,7 @@ model Transaction {
   id              String           @id @default(cuid())
   externalId      String?          @unique @db.VarChar(255)
   createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  updatedAt       DateTime         @updatedAt @default(now())
   amount          Float
   type            TransactionType
   currency        String           @db.VarChar(3)
@@ -272,7 +272,7 @@ model PaymentMethod {
   paymentToken    String        @unique @db.VarChar(255)
   paymentProvider String        @db.VarChar(50)
   createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  updatedAt       DateTime      @updatedAt @default(now())
   type            String        @db.VarChar(50)
   lastFourDigits  String?       @db.VarChar(4)
   cardHolderName  String?       @db.VarChar(50)
@@ -315,7 +315,7 @@ model Invoice {
 model RGPD {
   id            String      @id @default(cuid())
   createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  updatedAt     DateTime    @updatedAt @default(now())
   consentType   ConsentType
   consented     Boolean     @default(false)
   consentVersion String?    @db.VarChar(50)
