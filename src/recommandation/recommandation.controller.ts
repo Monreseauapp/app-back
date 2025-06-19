@@ -28,6 +28,16 @@ export class RecommandationController {
   findOne(@Param('id') id: string) {
     return this.recommandationService.findOne(id);
   }
+  
+  @Get('recipient/:recipientId')
+  findByRecipientId(@Param('recipientId') recipientId: string) {
+    return this.recommandationService.findByRecipientId(recipientId);
+  }
+
+  @Get('initiator/:initiatorId')
+  findByInitiatorId(@Param('initiatorId') initiatorId: string) {
+    return this.recommandationService.findByInitiatorId(initiatorId);
+  }
 
   @Patch(':id')
   update(

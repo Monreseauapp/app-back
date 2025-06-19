@@ -21,6 +21,18 @@ export class RecommandationService {
       where: { id },
     });
   }
+  
+  findByRecipientId(recipientId: string) {
+    return this.databaseService.recommandation.findMany({
+      where: { recipientId },
+    });
+  }
+  
+  findByInitiatorId(initiatorId: string) {
+    return this.databaseService.recommandation.findMany({
+      where: { initiatorId },
+    });
+  }
 
   update(
     id: string,

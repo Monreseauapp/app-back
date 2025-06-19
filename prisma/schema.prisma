@@ -16,7 +16,7 @@ datasource db {
 
 // ENUM
 
-enum SubcriptionType {
+enum SubscriptionType {
   Indep
   VSB
   SMB
@@ -93,8 +93,10 @@ model User {
   photoUrl                 String?           @db.VarChar(255)
   jobTitle                 String?           @db.VarChar(50)
   address                  String            @db.VarChar(255)
+  adressComplement        String?           @db.VarChar(255)
   postalCode               Int
   city                     String            @db.VarChar(50)
+  country                  String            @db.VarChar(50)
   createdAt                DateTime          @default(now())
   updatedAt                DateTime          @updatedAt
   lastLogin                DateTime?
@@ -129,15 +131,16 @@ model Company {
   id                 String              @id @default(cuid())
   name               String              @unique @db.VarChar(50)
   address            String              @db.VarChar(255)
+  addressComplement String?             @db.VarChar(255)
   postalCode         Int
   city               String              @db.VarChar(50)
+  country            String              @db.VarChar(50)
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
   lastLogin          DateTime
   recommendationRate String?             @db.VarChar(50)
   email              String              @unique @db.VarChar(50)
   phone              String              @unique @db.VarChar(12)
-  password           String              @db.VarChar(255)
   website            String?             @db.VarChar(255)
   photoUrl           String?             @db.VarChar(255)
   description        String?             @db.VarChar(255)
@@ -156,7 +159,7 @@ model Subscription {
   id            String            @id @default(cuid())
   startDate     DateTime
   duration      Int
-  type          SubcriptionType
+  type          SubscriptionType
   state         SubscriptionState
   endDate       DateTime
   cancelledDate DateTime?
