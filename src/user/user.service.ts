@@ -8,7 +8,7 @@ import { DatabaseService } from 'src/database/database.service';
 export class UserService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  create(createUserDto: Prisma.UserCreateInput) {
+  async create(createUserDto: Prisma.UserCreateInput) {
     return this.databaseService.user.create({
       data: createUserDto,
     });
