@@ -7,6 +7,13 @@ import { JobDomainModule } from './job-domain/job-domain.module';
 import { CompanyModule } from './company/company.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { RecommandationsModule } from './recommandations/recommandations.module';
+import { ProjectModule } from './project/project.module';
+import { CompanyProjectModule } from './company-project/company-project.module';
+import { ReviewModule } from './review/review.module';
+import { TransactionModule } from './transaction/transaction.module';
+import { PaymentMethodModule } from './payment-method/payment-method.module';
+import { InvoiceModule } from './invoice/invoice.module';
+import { RgpdModule } from './rgpd/rgpd.module';
 
 @Module({
   imports: [
