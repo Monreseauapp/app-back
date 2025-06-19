@@ -96,7 +96,7 @@ model User {
   postalCode               Int
   city                     String            @db.VarChar(50)
   createdAt                DateTime          @default(now())
-  updatedAt                DateTime          @updatedAt @default(now())
+  updatedAt                DateTime          @updatedAt
   lastLogin                DateTime?
   phone                    String            @unique @db.VarChar(12)
   password                 String            @db.VarChar(255)
@@ -132,7 +132,7 @@ model Company {
   postalCode         Int
   city               String              @db.VarChar(50)
   createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt @default(now())
+  updatedAt          DateTime            @updatedAt
   lastLogin          DateTime
   recommendationRate String?             @db.VarChar(50)
   email              String              @unique @db.VarChar(50)
@@ -162,7 +162,7 @@ model Subscription {
   cancelledDate DateTime?
   retentionDate DateTime?
   createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt @default(now())
+  updatedAt     DateTime          @updatedAt
   companyId     String?           @unique
 
   Company       Company?          @relation("CompanySubscription")
@@ -173,7 +173,7 @@ model Subscription {
 model Recommandation {
   id           String    @id @default(cuid())
   createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt @default(now())
+  updatedAt    DateTime  @updatedAt
   priority     Int       @default(0)
   firstName    String    @db.VarChar(50)
   lastName     String    @db.VarChar(50)
@@ -200,7 +200,7 @@ model Recommandation {
 model Project {
   id             String           @id @default(cuid())
   createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt @default(now())
+  updatedAt      DateTime         @updatedAt
   name           String           @db.VarChar(50)
   description    String?          @db.VarChar(255)
   startDate      DateTime?
@@ -219,7 +219,7 @@ model Project {
 
 model CompanyProject {
   createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt @default(now())
+  updatedAt          DateTime           @updatedAt
   projectId          String
   companyId          String
   retentionDate     DateTime?
@@ -233,7 +233,7 @@ model CompanyProject {
 model Review {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
+  updatedAt DateTime @updatedAt
   rating    Int      @default(0)
   comment   String?  @db.VarChar(255)
   userId    String
@@ -252,7 +252,7 @@ model Transaction {
   id              String           @id @default(cuid())
   externalId      String?          @unique @db.VarChar(255)
   createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt @default(now())
+  updatedAt       DateTime         @updatedAt
   amount          Float
   type            TransactionType
   currency        String           @db.VarChar(3)
@@ -272,7 +272,7 @@ model PaymentMethod {
   paymentToken    String        @unique @db.VarChar(255)
   paymentProvider String        @db.VarChar(50)
   createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt @default(now())
+  updatedAt       DateTime      @updatedAt
   type            String        @db.VarChar(50)
   lastFourDigits  String?       @db.VarChar(4)
   cardHolderName  String?       @db.VarChar(50)
@@ -315,7 +315,7 @@ model Invoice {
 model RGPD {
   id            String      @id @default(cuid())
   createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt @default(now())
+  updatedAt     DateTime    @updatedAt
   consentType   ConsentType
   consented     Boolean     @default(false)
   consentVersion String?    @db.VarChar(50)
