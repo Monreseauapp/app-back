@@ -108,8 +108,8 @@ model User {
   consentMarketing        Boolean           @default(false)
   jobDomain                JobDomain         @relation(fields: [domainId], references: [id])
   company                  Company?          @relation(fields: [companyId], references: [id])
-  recommendationsInitiated Recommandations[] @relation("RecoInitiateur")
-  recommendationsReceived  Recommandations[] @relation("RecoDestinataire")
+  recommendationsInitiated Recommandation[] @relation("RecoInitiateur")
+  recommendationsReceived  Recommandation[] @relation("RecoDestinataire")
   projects                 Project[]
   payments                 PaymentMethod[]
   reviews                  Review[]
@@ -142,12 +142,12 @@ model Company {
   photoUrl           String?             @db.VarChar(255)
   description        String?             @db.VarChar(255)
   linkedin           String?             @db.VarChar(255)
-  subscriptionId     String              @unique
+  subscriptionId     String?              @unique
   ownerId            String              @unique
   retentionDate     DateTime
-  Subscription       Subscription        @relation("CompanySubscription", fields: [subscriptionId], references: [id])
+  Subscription       Subscription?        @relation("CompanySubscription", fields: [subscriptionId], references: [id])
   users              User[]
-  recommendations    Recommandations[]
+  recommendations    Recommandation[]
   enterpriseProjects CompanyProject[]
   reviews            Review[]
 }
@@ -170,7 +170,7 @@ model Subscription {
   invoices      Invoice[]
 }
 
-model Recommandations {
+model Recommandation {
   id           String    @id @default(cuid())
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt

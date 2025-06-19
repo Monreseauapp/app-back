@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { Prisma } from 'generated/prisma';
 
@@ -22,13 +30,15 @@ export class TransactionController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTransactionDto: Prisma.TransactionUpdateInput) {
+  update(
+    @Param('id') id: string,
+    @Body() updateTransactionDto: Prisma.TransactionUpdateInput,
+  ) {
     return this.transactionService.update(id, updateTransactionDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.transactionService.remove(id);
-
   }
 }

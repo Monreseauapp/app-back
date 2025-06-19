@@ -2,10 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from 'generated/prisma';
 import { DatabaseService } from 'src/database/database.service';
 
-
 @Injectable()
 export class TransactionService {
-constructor(private readonly databaseService: DatabaseService) {}
+  constructor(private readonly databaseService: DatabaseService) {}
 
   create(createTransactionDto: Prisma.TransactionCreateInput) {
     return this.databaseService.transaction.create({

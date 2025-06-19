@@ -16,7 +16,7 @@ export class CompanyProjectService {
     return this.databaseService.companyProject.findMany();
   }
 
-    findOne(projectId: string, companyId: string) {
+  findOne(projectId: string, companyId: string) {
     return this.databaseService.companyProject.findUnique({
       where: {
         projectId_companyId: {
@@ -27,7 +27,11 @@ export class CompanyProjectService {
     });
   }
 
-  update(projectId: string, companyId: string, updateCompanyProjectDto: Prisma.CompanyProjectUpdateInput) {
+  update(
+    projectId: string,
+    companyId: string,
+    updateCompanyProjectDto: Prisma.CompanyProjectUpdateInput,
+  ) {
     return this.databaseService.companyProject.update({
       where: {
         projectId_companyId: {
