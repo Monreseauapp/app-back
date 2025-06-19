@@ -21,7 +21,7 @@ export class RecommandationService {
       where: { id },
     });
   }
-
+  
   findByRecipientId(recipientId: string) {
     return this.databaseService.recommandation.findMany({
       where: { recipientId },
