@@ -26,7 +26,7 @@ export class RgpdController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRgpdDto: Prisma.RGPDUpdateInput) {
     return this.rgpdService.update(id, updateRgpdDto);
-
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
