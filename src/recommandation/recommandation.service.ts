@@ -22,6 +22,18 @@ export class RecommandationService {
     });
   }
 
+  findByRecipientId(recipientId: string) {
+    return this.databaseService.recommandation.findMany({
+      where: { recipientId },
+    });
+  }
+  
+  findByInitiatorId(initiatorId: string) {
+    return this.databaseService.recommandation.findMany({
+      where: { initiatorId },
+    });
+  }
+
   update(
     id: string,
     updateRecommandationDto: Prisma.RecommandationUpdateInput,
