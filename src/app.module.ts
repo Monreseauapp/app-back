@@ -12,7 +12,6 @@ import { TransactionModule } from './transaction/transaction.module';
 import { PaymentMethodModule } from './payment-method/payment-method.module';
 import { InvoiceModule } from './invoice/invoice.module';
 import { RgpdModule } from './rgpd/rgpd.module';
-import { UserModule } from './user/user.module';
 import { RecommandationModule } from './recommandation/recommandation.module';
 import { UsersModule } from './users/users.module';
 
@@ -29,7 +28,6 @@ import { UsersModule } from './users/users.module';
     PaymentMethodModule,
     InvoiceModule,
     RgpdModule,
-    UserModule,
     RecommandationModule,
     UsersModule,
   ],
