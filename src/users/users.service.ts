@@ -22,7 +22,7 @@ export class UsersService {
     });
   }
 
-  findUserCompany(id: string): Promise<User & { company: Company } | null> {
+  findUserCompany(id: string): Promise<(Prisma.UserGetPayload<{ include: { company: true } }>) | null> {
     return this.databaseService.user.findUnique({
       where: { id },
       include: { company: true },
