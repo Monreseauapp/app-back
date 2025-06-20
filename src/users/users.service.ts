@@ -22,7 +22,7 @@ export class UsersService {
     });
   }
 
-  findUserCompany(id: string) {
+  findUserCompany(id: string): Promise<User & { company: Company } | null> {
     return this.databaseService.user.findUnique({
       where: { id },
       include: { company: true },
