@@ -29,6 +29,11 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  @Get(':id/company')
+  findUserCompany(@Param('id') id: string) {
+    return this.usersService.findUserCompany(id);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

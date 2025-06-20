@@ -22,6 +22,13 @@ export class UsersService {
     });
   }
 
+  findUserCompany(id: string) {
+    return this.databaseService.user.findUnique({
+      where: { id },
+      include: { company: true },
+    });
+  }
+
   update(id: string, updateUserDto: Prisma.UserUpdateInput) {
     return this.databaseService.user.update({
       where: { id },

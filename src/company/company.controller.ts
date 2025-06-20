@@ -29,11 +29,6 @@ export class CompanyController {
     return this.companyService.findOne(id);
   }
 
-  @Get('user/:userId')
-  findByUserId(@Param('userId') userId: string) {
-    return this.companyService.findByUserId(userId);
-  }
-
   @Patch(':id')
   update(
     @Param('id') id: string,
