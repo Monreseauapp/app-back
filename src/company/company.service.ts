@@ -22,12 +22,6 @@ export class CompanyService {
     });
   }
 
-  findByUserId(userId: string) {
-    return this.databaseService.company.findMany({
-      where: { users: { some: { id: userId } } },
-    });
-  }
-
   update(id: string, updateCompanyDto: Prisma.CompanyUpdateInput) {
     return this.databaseService.company.update({
       where: { id },
