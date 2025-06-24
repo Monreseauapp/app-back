@@ -22,6 +22,13 @@ export class UsersService {
     });
   }
 
+
+  findByEmail(email: string): Promise<Prisma.UserGetPayload<{}> | null> {
+    return this.databaseService.user.findUnique({
+      where: { email },
+    });
+  }
+
   findUserCompany(id: string): Promise<(Prisma.UserGetPayload<{ include: { company: true } }>) | null> {
     return this.databaseService.user.findUnique({
       where: { id },
