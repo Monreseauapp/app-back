@@ -183,6 +183,7 @@ model Recommandation {
   email        String    @db.VarChar(255)
   phone        String    @db.VarChar(12)
   address      String    @db.VarChar(255)
+  addressComplement String? @db.VarChar(255)
   postalCode   Int
   city         String    @db.VarChar(50)
   description  String?   @db.VarChar(255)
@@ -296,6 +297,7 @@ model Invoice {
   id            String          @id @default(cuid())
   name         String          @db.VarChar(50)
   address       String          @db.VarChar(255)
+  addressComplement String?    @db.VarChar(255)
   postalCode    Int
   city          String          @db.VarChar(50)
   VATNumber     String?         @db.VarChar(50)
