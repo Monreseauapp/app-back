@@ -21,6 +21,12 @@ export class ReviewService {
     });
   }
 
+  findbyCompanyId(companyId: string) {
+    return this.databaseService.review.findMany({
+      where: { companyId },
+    });
+  }
+
   update(id: string, updateReviewDto: Prisma.ReviewUpdateInput) {
     return this.databaseService.review.update({
       where: { id },

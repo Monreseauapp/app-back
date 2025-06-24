@@ -29,6 +29,11 @@ export class ReviewController {
     return this.reviewService.findOne(id);
   }
 
+  @Get('company/:companyId')
+  findByCompanyId(@Param('companyId') companyId: string) {
+    return this.reviewService.findbyCompanyId(companyId);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
