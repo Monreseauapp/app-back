@@ -40,6 +40,26 @@ export class RecommandationService {
     });
   }
 
+  findAllByCompanyInitiators(companyId: string) {
+    return this.databaseService.recommandation.findMany({
+      where: {
+        initiator: {
+          companyId: companyId,
+        },
+      },
+    });
+  }
+
+  findAllByCompanyRecipients(companyId: string) {
+    return this.databaseService.recommandation.findMany({
+      where: {
+        recipient: {
+          companyId: companyId,
+        },
+      },
+    });
+  }
+
   update(
     id: string,
     updateRecommandationDto: Prisma.RecommandationUpdateInput,

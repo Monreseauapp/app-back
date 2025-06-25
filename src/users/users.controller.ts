@@ -33,7 +33,7 @@ export class UsersController {
   findByEmail(@Param('email') email: string) {
     return this.usersService.findByEmail(email);
   }
-  
+
   @Get(':id/company')
   findUserCompany(@Param('id') id: string) {
     return this.usersService.findUserCompany(id);
