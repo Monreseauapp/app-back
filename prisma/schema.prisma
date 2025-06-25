@@ -16,7 +16,7 @@ datasource db {
 
 // ENUM
 
-enum SubcriptionType {
+enum SubscriptionType {
   Indep
   VSB
   SMB
@@ -93,8 +93,10 @@ model User {
   photoUrl                 String?           @db.VarChar(255)
   jobTitle                 String?           @db.VarChar(50)
   address                  String            @db.VarChar(255)
+  addressComplement        String?           @db.VarChar(255)
   postalCode               Int
   city                     String            @db.VarChar(50)
+  country                  String            @db.VarChar(50)
   createdAt                DateTime          @default(now())
   updatedAt                DateTime          @updatedAt
   lastLogin                DateTime?
@@ -108,8 +110,8 @@ model User {
   consentMarketing        Boolean           @default(false)
   jobDomain                JobDomain         @relation(fields: [domainId], references: [id])
   company                  Company?          @relation(fields: [companyId], references: [id])
-  recommendationsInitiated Recommandations[] @relation("RecoInitiateur")
-  recommendationsReceived  Recommandations[] @relation("RecoDestinataire")
+  recommendationsInitiated Recommandation[] @relation("RecoInitiateur")
+  recommendationsReceived  Recommandation[] @relation("RecoDestinataire")
   projects                 Project[]
   payments                 PaymentMethod[]
   reviews                  Review[]
@@ -129,25 +131,26 @@ model Company {
   id                 String              @id @default(cuid())
   name               String              @unique @db.VarChar(50)
   address            String              @db.VarChar(255)
+  addressComplement String?             @db.VarChar(255)
   postalCode         Int
   city               String              @db.VarChar(50)
+  country            String?             @db.VarChar(50)
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
   lastLogin          DateTime
   recommendationRate String?             @db.VarChar(50)
   email              String              @unique @db.VarChar(50)
   phone              String              @unique @db.VarChar(12)
-  password           String              @db.VarChar(255)
   website            String?             @db.VarChar(255)
   photoUrl           String?             @db.VarChar(255)
   description        String?             @db.VarChar(255)
   linkedin           String?             @db.VarChar(255)
-  subscriptionId     String              @unique
+  subscriptionId     String?              @unique
   ownerId            String              @unique
   retentionDate     DateTime
-  Subscription       Subscription        @relation("CompanySubscription", fields: [subscriptionId], references: [id])
+  Subscription       Subscription?        @relation("CompanySubscription", fields: [subscriptionId], references: [id])
   users              User[]
-  recommendations    Recommandations[]
+  recommendations    Recommandation[]
   enterpriseProjects CompanyProject[]
   reviews            Review[]
 }
@@ -156,7 +159,7 @@ model Subscription {
   id            String            @id @default(cuid())
   startDate     DateTime
   duration      Int
-  type          SubcriptionType
+  type          SubscriptionType
   state         SubscriptionState
   endDate       DateTime
   cancelledDate DateTime?
@@ -170,7 +173,7 @@ model Subscription {
   invoices      Invoice[]
 }
 
-model Recommandations {
+model Recommandation {
   id           String    @id @default(cuid())
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
@@ -180,6 +183,7 @@ model Recommandations {
   email        String    @db.VarChar(255)
   phone        String    @db.VarChar(12)
   address      String    @db.VarChar(255)
+  addressComplement String? @db.VarChar(255)
   postalCode   Int
   city         String    @db.VarChar(50)
   description  String?   @db.VarChar(255)
@@ -293,6 +297,7 @@ model Invoice {
   id            String          @id @default(cuid())
   name         String          @db.VarChar(50)
   address       String          @db.VarChar(255)
+  addressComplement String?    @db.VarChar(255)
   postalCode    Int
   city          String          @db.VarChar(50)
   VATNumber     String?         @db.VarChar(50)

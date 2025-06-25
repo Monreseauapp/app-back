@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from 'generated/prisma';
-import { DatabaseService } from '../database/database.service';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async create(createUserDto: Prisma.UserCreateInput) {
+  create(createUserDto: Prisma.UserCreateInput) {
     return this.databaseService.user.create({
       data: createUserDto,
     });
@@ -19,6 +19,20 @@ export class UsersService {
   findOne(id: string) {
     return this.databaseService.user.findUnique({
       where: { id },
+    });
+  }
+
+
+  findByEmail(email: string): Promise<Prisma.UserGetPayload<{}> | null> {
+    return this.databaseService.user.findUnique({
+      where: { email },
+    });
+  }
+
+  findUserCompany(id: string): Promise<(Prisma.UserGetPayload<{ include: { company: true } }>) | null> {
+    return this.databaseService.user.findUnique({
+      where: { id },
+      include: { company: true },
     });
   }
 

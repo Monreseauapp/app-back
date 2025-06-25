@@ -6,7 +6,6 @@ import { DatabaseService } from 'src/database/database.service';
 export class SubscriptionService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-
   create(createSubscriptionDto: Prisma.SubscriptionCreateInput) {
     return this.databaseService.subscription.create({
       data: createSubscriptionDto,

@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { Prisma } from 'generated/prisma';
 
@@ -21,8 +29,16 @@ export class CompanyController {
     return this.companyService.findOne(id);
   }
 
+  @Get(':id/users')
+  findAllUsers(@Param('id') id: string) {
+    return this.companyService.findAllUsers(id);
+  }
+
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCompanyDto: Prisma.CompanyUpdateInput) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCompanyDto: Prisma.CompanyUpdateInput,
+  ) {
     return this.companyService.update(id, updateCompanyDto);
   }
 
