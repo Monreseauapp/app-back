@@ -134,7 +134,7 @@ model Company {
   addressComplement String?             @db.VarChar(255)
   postalCode         Int
   city               String              @db.VarChar(50)
-  country            String              @db.VarChar(50)
+  country            String?             @db.VarChar(50)
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
   lastLogin          DateTime
