@@ -29,6 +29,11 @@ export class CompanyController {
     return this.companyService.findOne(id);
   }
 
+  @Get(':id/users')
+  findAllUsers(@Param('id') id: string) {
+    return this.companyService.findAllUsers(id);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

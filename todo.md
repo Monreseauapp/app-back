@@ -7,3 +7,9 @@ PRIORITAIRE
 - handle signature
 - Notification system
 
+
+2 requêtes : 
+- Paramètre : CompanyId
+- Commun : Obtenir tous les id des users d'une entreprise
+- Première requête : Obtenir les recommandations où les id sont les initiatorId
+- Deuxième requête : Obtenir les recommandations où les id sont les recipientId

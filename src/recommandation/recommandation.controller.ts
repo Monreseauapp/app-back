@@ -43,6 +43,17 @@ export class RecommandationController {
   findByCompanyId(@Param('companyId') companyId: string) {
     return this.recommandationService.findByCompanyId(companyId);
   }
+
+  @Get('company-initiators/:companyId')
+  findAllByCompanyInitiators(@Param('companyId') companyId: string) {
+    return this.recommandationService.findAllByCompanyInitiators(companyId);
+  }
+
+  @Get('company-recipients/:companyId')
+  findAllByCompanyRecipients(@Param('companyId') companyId: string) {
+    return this.recommandationService.findAllByCompanyRecipients(companyId);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
