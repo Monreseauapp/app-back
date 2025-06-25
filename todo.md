@@ -1,5 +1,5 @@
 PRIORITAIRE
-- review par ID d'entrprise
+- review par ID d'entreprise
 -----------------------------
 - systeme d'auth + avec google
 - auth avec code a 4 chiffre
