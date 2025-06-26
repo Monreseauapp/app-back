@@ -46,32 +46,20 @@ enum ConsentType {
   PAYMENTS
 }
 
-enum RecoStateInitiator {
+enum RecoState {
   PENDING
   ACCEPTED
   REJECTED
 }
 
-enum RecoStateCompany {
-  PENDING
-  ACCEPTED
-  REJECTED
-}
-
-enum ProjectStateInitiator {
+enum ProjectState {
   PENDING
   IN_PROGRESS
   COMPLETED
   ARCHIVED
 }
 
-enum ProjectStateCompany {
-  PENDING
-  IN_PROGRESS
-  COMPLETED
-  ARCHIVED
-}
-enum CompanyChoiceState {
+enum ProjectChoiceState {
   PENDING
   ACCEPTED
   REJECTED
@@ -203,15 +191,9 @@ model Recommandation {
   inProgressAt DateTime?
   endDate      DateTime?
   isAccepted   Boolean   @default(false)
-<<<<<<< features/change-database
   RecoStateInitiator    RecoState @default(PENDING)
   rejectionReasonInitiator String? @db.VarChar(255)
   RecoStateCompany      RecoState @default(PENDING)
-=======
-  RecoStateInitiator    RecoStateInitiator @default(PENDING)
-  rejectionReasonInitiator String? @db.VarChar(255)
-  RecoStateCompany      RecoStateCompany @default(PENDING)
->>>>>>> develop
   rejectionReasonCompany String? @db.VarChar(255)
   companyId    String
   initiatorId  String
@@ -233,15 +215,7 @@ model Project {
   priority       Int              @default(0)
   isPublic       Boolean          @default(false)
   companyId      String
-<<<<<<< features/change-database
-  ProjectStateInitiator   ProjectState     @default(PENDING)
-  rejectionReasonInitiator String? @db.VarChar(255)
-  ProjectStateCompany     ProjectState       @default(PENDING)
-=======
-  ProjectStateInitiator   ProjectStateInitiator     @default(PENDING)
-  rejectionReasonInitiator String? @db.VarChar(255)
-  ProjectStateCompany     ProjectStateCompany       @default(PENDING)
->>>>>>> develop
+  ProjectChoiceCompany     ProjectChoiceState       @default(PENDING)
   rejectionReasonCompany  String? @db.VarChar(255)
   userId         String
   retentionDate  DateTime?
@@ -257,7 +231,7 @@ model CompanyProject {
   projectId          String
   companyId          String
   retentionDate     DateTime?
-  CompanyChoiceState CompanyChoiceState @default(PENDING)
+  UserChoiceState ProjectChoiceState @default(PENDING)
   rejectionReason    String?            @db.VarChar(255)
   project            Project            @relation(fields: [projectId], references: [id])
   company            Company            @relation(fields: [companyId], references: [id])
