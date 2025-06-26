@@ -191,8 +191,8 @@ model Recommandation {
   inProgressAt DateTime?
   endDate      DateTime?
   isAccepted   Boolean   @default(false)
-  RecoStateInitiator    RecoState @default(PENDING)
-  rejectionReasonInitiator String? @db.VarChar(255)
+  RecoStateRecipient    RecoState @default(PENDING)
+  rejectionReasonRecipient String? @db.VarChar(255)
   RecoStateCompany      RecoState @default(PENDING)
   rejectionReasonCompany String? @db.VarChar(255)
   companyId    String
