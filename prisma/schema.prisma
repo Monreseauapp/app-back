@@ -215,6 +215,7 @@ model Project {
   priority       Int              @default(0)
   isPublic       Boolean          @default(false)
   companyId      String
+  ProjectState    ProjectState    @default(PENDING)
   ProjectChoiceCompany     ProjectChoiceState       @default(PENDING)
   rejectionReasonCompany  String? @db.VarChar(255)
   userId         String
