@@ -46,13 +46,26 @@ enum ConsentType {
   PAYMENTS
 }
 
-enum RecoState {
+enum RecoStateInitiator {
   PENDING
   ACCEPTED
   REJECTED
 }
 
-enum ProjectState {
+enum RecoStateCompany {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum ProjectStateInitiator {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}
+
+enum ProjectStateCompany {
   PENDING
   IN_PROGRESS
   COMPLETED
@@ -191,7 +204,10 @@ model Recommandation {
   inProgressAt DateTime?
   endDate      DateTime?
   isAccepted   Boolean   @default(false)
-  RecoState    RecoState @default(PENDING)
+  RecoStateInitiator    RecoStateInitiator @default(PENDING)
+  rejectionReasonInitiator String? @db.VarChar(255)
+  RecoStateCompany      RecoStateCompany @default(PENDING)
+  rejectionReasonCompany String? @db.VarChar(255)
   companyId    String
   initiatorId  String
   recipientId  String?
@@ -212,7 +228,10 @@ model Project {
   priority       Int              @default(0)
   isPublic       Boolean          @default(false)
   companyId      String
-  projectState   ProjectState     @default(PENDING)
+  ProjectStateInitiator   ProjectStateInitiator     @default(PENDING)
+  rejectionReasonInitiator String? @db.VarChar(255)
+  ProjectStateCompany     ProjectStateCompany       @default(PENDING)
+  rejectionReasonCompany  String? @db.VarChar(255)
   userId         String
   retentionDate  DateTime?
   user           User             @relation(fields: [userId], references: [id])
@@ -228,6 +247,7 @@ model CompanyProject {
   companyId          String
   retentionDate     DateTime?
   CompanyChoiceState CompanyChoiceState @default(PENDING)
+  rejectionReason    String?            @db.VarChar(255)
   project            Project            @relation(fields: [projectId], references: [id])
   company            Company            @relation(fields: [companyId], references: [id])
 
