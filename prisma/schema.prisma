@@ -71,7 +71,6 @@ enum ProjectStateCompany {
   COMPLETED
   ARCHIVED
 }
-
 enum CompanyChoiceState {
   PENDING
   ACCEPTED
@@ -204,9 +203,15 @@ model Recommandation {
   inProgressAt DateTime?
   endDate      DateTime?
   isAccepted   Boolean   @default(false)
+<<<<<<< features/change-database
+  RecoStateInitiator    RecoState @default(PENDING)
+  rejectionReasonInitiator String? @db.VarChar(255)
+  RecoStateCompany      RecoState @default(PENDING)
+=======
   RecoStateInitiator    RecoStateInitiator @default(PENDING)
   rejectionReasonInitiator String? @db.VarChar(255)
   RecoStateCompany      RecoStateCompany @default(PENDING)
+>>>>>>> develop
   rejectionReasonCompany String? @db.VarChar(255)
   companyId    String
   initiatorId  String
@@ -228,9 +233,15 @@ model Project {
   priority       Int              @default(0)
   isPublic       Boolean          @default(false)
   companyId      String
+<<<<<<< features/change-database
+  ProjectStateInitiator   ProjectState     @default(PENDING)
+  rejectionReasonInitiator String? @db.VarChar(255)
+  ProjectStateCompany     ProjectState       @default(PENDING)
+=======
   ProjectStateInitiator   ProjectStateInitiator     @default(PENDING)
   rejectionReasonInitiator String? @db.VarChar(255)
   ProjectStateCompany     ProjectStateCompany       @default(PENDING)
+>>>>>>> develop
   rejectionReasonCompany  String? @db.VarChar(255)
   userId         String
   retentionDate  DateTime?
