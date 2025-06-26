@@ -46,32 +46,18 @@ enum ConsentType {
   PAYMENTS
 }
 
-enum RecoStateInitiator {
+enum RecoState {
   PENDING
   ACCEPTED
   REJECTED
 }
 
-enum RecoStateCompany {
-  PENDING
-  ACCEPTED
-  REJECTED
-}
-
-enum ProjectStateInitiator {
+enum ProjectState {
   PENDING
   IN_PROGRESS
   COMPLETED
   ARCHIVED
 }
-
-enum ProjectStateCompany {
-  PENDING
-  IN_PROGRESS
-  COMPLETED
-  ARCHIVED
-}
-
 enum CompanyChoiceState {
   PENDING
   ACCEPTED
@@ -204,9 +190,9 @@ model Recommandation {
   inProgressAt DateTime?
   endDate      DateTime?
   isAccepted   Boolean   @default(false)
-  RecoStateInitiator    RecoStateInitiator @default(PENDING)
+  RecoStateInitiator    RecoState @default(PENDING)
   rejectionReasonInitiator String? @db.VarChar(255)
-  RecoStateCompany      RecoStateCompany @default(PENDING)
+  RecoStateCompany      RecoState @default(PENDING)
   rejectionReasonCompany String? @db.VarChar(255)
   companyId    String
   initiatorId  String
@@ -228,9 +214,9 @@ model Project {
   priority       Int              @default(0)
   isPublic       Boolean          @default(false)
   companyId      String
-  ProjectStateInitiator   ProjectStateInitiator     @default(PENDING)
+  ProjectStateInitiator   ProjectState     @default(PENDING)
   rejectionReasonInitiator String? @db.VarChar(255)
-  ProjectStateCompany     ProjectStateCompany       @default(PENDING)
+  ProjectStateCompany     ProjectState       @default(PENDING)
   rejectionReasonCompany  String? @db.VarChar(255)
   userId         String
   retentionDate  DateTime?
