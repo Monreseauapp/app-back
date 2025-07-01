@@ -92,31 +92,39 @@ model User {
   email                    String            @unique @db.VarChar(255)
   photoUrl                 String?           @db.VarChar(255)
   jobTitle                 String?           @db.VarChar(50)
-  address                  String            @db.VarChar(255)
+  address                  String?           @db.VarChar(255)  
   addressComplement        String?           @db.VarChar(255)
-  postalCode               Int
-  city                     String            @db.VarChar(50)
-  country                  String            @db.VarChar(50)
+  postalCode               Int?              
+  city                     String?           @db.VarChar(50)   
+  country                  String?           @db.VarChar(50)   
   createdAt                DateTime          @default(now())
   updatedAt                DateTime          @updatedAt
   lastLogin                DateTime?
-  phone                    String            @unique @db.VarChar(12)
-  password                 String            @db.VarChar(255)
-  domainId                 String
+  phone                    String?           @unique @db.VarChar(12)
+  password                 String?           @db.VarChar(255)  
+  domainId                 String?           
   companyId                String?
   isAdmin                  Boolean           @default(false)
-  rententionDate           DateTime
-  consentTerms            Boolean           @default(false)
-  consentMarketing        Boolean           @default(false)
-  jobDomain                JobDomain         @relation(fields: [domainId], references: [id])
+  rententionDate           DateTime?         
+  consentTerms             Boolean           @default(false)
+  consentMarketing         Boolean           @default(false)
+  googleId                 String?           @unique  
+  isEmailVerified          Boolean           @default(false)  
+  emailVerificationToken   String?           
+  resetPasswordToken       String?           
+  resetPasswordExpires     DateTime?         
+  refreshToken             String?           
+  jobDomain                JobDomain?        @relation(fields: [domainId], references: [id])
   company                  Company?          @relation(fields: [companyId], references: [id])
   recommendationsInitiated Recommandation[] @relation("RecoInitiateur")
   recommendationsReceived  Recommandation[] @relation("RecoDestinataire")
   projects                 Project[]
   payments                 PaymentMethod[]
   reviews                  Review[]
-  RGPD                       RGPD[]
-  projectsAsMember           Project[] @relation("ProjectUsers")
+  RGPD                     RGPD[]
+  projectsAsMember         Project[]         @relation("ProjectUsers")
+  
+  @@map("users")
 }
 
 model JobDomain {
