@@ -117,6 +117,7 @@ model User {
   reviews                  Review[]
   RGPD                       RGPD[]
   projectsAsMember           Project[] @relation("ProjectUsers")
+  files                      File[]
 }
 
 model JobDomain {
@@ -337,4 +338,26 @@ model RGPD {
   userId        String
   retentionDate DateTime?
   user          User        @relation(fields: [userId], references: [id])
+}
+
+model File {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String
+  mimetype     String
+  size         Int
+  path         String
+  url          String?
+  uploadedAt   DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       String?
+  user         User?    @relation(fields: [userId], references: [id])
+  
+ 
+  category     String?  
+  description  String?  
+  isPublic     Boolean  @default(false)
+  retentionDate DateTime?
+  
+  @@map("files")
 }
