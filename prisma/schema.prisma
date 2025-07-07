@@ -108,6 +108,7 @@ model User {
   rententionDate           DateTime
   consentTerms            Boolean           @default(false)
   consentMarketing        Boolean           @default(false)
+  allowRecommendationDataAccess Boolean @default(false)
   jobDomain                JobDomain         @relation(fields: [domainId], references: [id])
   company                  Company?          @relation(fields: [companyId], references: [id])
   recommendationsInitiated Recommandation[] @relation("RecoInitiateur")
@@ -149,6 +150,7 @@ model Company {
   subscriptionId     String?              @unique
   ownerId            String              @unique
   retentionDate     DateTime
+  OpentoReco       Boolean            @default(true)
   Subscription       Subscription?        @relation("CompanySubscription", fields: [subscriptionId], references: [id])
   users              User[]
   recommendations    Recommandation[]
@@ -183,10 +185,20 @@ model Recommandation {
   lastName     String    @db.VarChar(50)
   email        String    @db.VarChar(255)
   phone        String    @db.VarChar(12)
-  address      String    @db.VarChar(255)
+  address      String?    @db.VarChar(255)
   addressComplement String? @db.VarChar(255)
   postalCode   Int
   city         String    @db.VarChar(50)
+  country      String?    @db.VarChar(50)
+  companyName  String?   @db.VarChar(50)
+  companyAddress String? @db.VarChar(255)
+  companyAddressComplement String? @db.VarChar(255)
+  companyPostalCode Int?
+  companyCity  String   @db.VarChar(50)
+  companyCountry String? @db.VarChar(50)
+  companyemail String? @db.VarChar(255)
+  companyPhone String? @db.VarChar(12)
+  companyJobDomain String? @db.VarChar(50)
   description  String?   @db.VarChar(255)
   startDate    DateTime?
   inProgressAt DateTime?
@@ -215,7 +227,17 @@ model Project {
   endDate        DateTime?
   priority       Int              @default(0)
   isPublic       Boolean          @default(false)
+  companyNumber  Int?
   companyId      String
+  companyName    String?          @db.VarChar(50)
+  companyAddress String?          @db.VarChar(255)
+  companyAddressComplement String? @db.VarChar(255)
+  companyPostalCode Int?
+  companyCity    String?          @db.VarChar(50)
+  companyCountry String?          @db.VarChar(50)
+  companyEmail   String?          @db.VarChar(255)
+  companyPhone   String?          @db.VarChar(12)
+  companyJobDomain String?        @db.VarChar(50)
   ProjectState    ProjectState    @default(PENDING)
   ProjectChoiceCompany     ProjectChoiceState       @default(PENDING)
   rejectionReasonCompany  String? @db.VarChar(255)
