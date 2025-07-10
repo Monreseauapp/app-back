@@ -16,7 +16,7 @@ datasource db {
 
 // ENUM
 
-enum SubcriptionType {
+enum SubscriptionType {
   Indep
   VSB
   SMB
@@ -59,7 +59,7 @@ enum ProjectState {
   ARCHIVED
 }
 
-enum CompanyChoiceState {
+enum ProjectChoiceState {
   PENDING
   ACCEPTED
   REJECTED
@@ -90,10 +90,14 @@ model User {
   lastName                 String            @db.VarChar(50)
   firstName                String            @db.VarChar(50)
   email                    String            @unique @db.VarChar(255)
+  photoUrl                 String?           @db.VarChar(255)
   jobTitle                 String?           @db.VarChar(50)
-  address                  String            @db.VarChar(255)
-  postalCode               Int
+  address                  String?            @db.VarChar(255)
+  addressComplement        String?           @db.VarChar(255)
+  postalCode               Int?
   city                     String            @db.VarChar(50)
+  country                  String?            @db.VarChar(50)
+
   createdAt                DateTime          @default(now())
   updatedAt                DateTime          @updatedAt
   lastLogin                DateTime?
@@ -105,15 +109,17 @@ model User {
   rententionDate           DateTime
   consentTerms            Boolean           @default(false)
   consentMarketing        Boolean           @default(false)
+  allowRecommendationDataAccess Boolean @default(false)
   jobDomain                JobDomain         @relation(fields: [domainId], references: [id])
   company                  Company?          @relation(fields: [companyId], references: [id])
-  recommendationsInitiated Recommandations[] @relation("RecoInitiateur")
-  recommendationsReceived  Recommandations[] @relation("RecoDestinataire")
+  recommendationsInitiated Recommandation[] @relation("RecoInitiateur")
+  recommendationsReceived  Recommandation[] @relation("RecoDestinataire")
   projects                 Project[]
   payments                 PaymentMethod[]
   reviews                  Review[]
   RGPD                       RGPD[]
   projectsAsMember           Project[] @relation("ProjectUsers")
+  files                      File[]
 }
 
 model JobDomain {
@@ -127,24 +133,30 @@ model JobDomain {
 model Company {
   id                 String              @id @default(cuid())
   name               String              @unique @db.VarChar(50)
-  address            String              @db.VarChar(255)
-  postalCode         Int
+  address            String?              @db.VarChar(255)
+  addressComplement String?             @db.VarChar(255)
+  postalCode         Int?
+
   city               String              @db.VarChar(50)
+  country            String?             @db.VarChar(50)
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
   lastLogin          DateTime
   recommendationRate String?             @db.VarChar(50)
   email              String              @unique @db.VarChar(50)
   phone              String              @unique @db.VarChar(12)
-  password           String              @db.VarChar(255)
   website            String?             @db.VarChar(255)
+  photoUrl           String?             @db.VarChar(255)
+  description        String?             @db.VarChar(255)
   linkedin           String?             @db.VarChar(255)
-  subscriptionId     String              @unique
+  subscriptionId     String?              @unique
   ownerId            String              @unique
   retentionDate     DateTime
-  Subscription       Subscription        @relation("CompanySubscription", fields: [subscriptionId], references: [id])
+  OpentoReco       Boolean            @default(true)
+
+  Subscription       Subscription?        @relation("CompanySubscription", fields: [subscriptionId], references: [id])
   users              User[]
-  recommendations    Recommandations[]
+  recommendations    Recommandation[]
   enterpriseProjects CompanyProject[]
   reviews            Review[]
 }
@@ -153,7 +165,7 @@ model Subscription {
   id            String            @id @default(cuid())
   startDate     DateTime
   duration      Int
-  type          SubcriptionType
+  type          SubscriptionType
   state         SubscriptionState
   endDate       DateTime
   cancelledDate DateTime?
@@ -167,24 +179,39 @@ model Subscription {
   invoices      Invoice[]
 }
 
-model Recommandations {
+model Recommandation {
   id           String    @id @default(cuid())
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   priority     Int       @default(0)
-  firstName    String    @db.VarChar(50)
-  lastName     String    @db.VarChar(50)
-  email        String    @db.VarChar(255)
-  phone        String    @db.VarChar(12)
-  address      String    @db.VarChar(255)
-  postalCode   Int
-  city         String    @db.VarChar(50)
+  firstName    String?    @db.VarChar(50)
+  lastName     String?    @db.VarChar(50)
+  email        String?    @db.VarChar(255)
+  phone        String?    @db.VarChar(12)
+  address      String?    @db.VarChar(255)
+  addressComplement String? @db.VarChar(255)
+  postalCode   Int?
+  city         String?    @db.VarChar(50)
+  country      String?    @db.VarChar(50)
+  companyName  String?   @db.VarChar(50)
+  companyAddress String? @db.VarChar(255)
+  companyAddressComplement String? @db.VarChar(255)
+  companyPostalCode Int?
+  companyCity  String?   @db.VarChar(50)
+  companyCountry String? @db.VarChar(50)
+  companyemail String? @db.VarChar(255)
+  companyPhone String? @db.VarChar(12)
+  companyJobDomain String? @db.VarChar(50)
+
   description  String?   @db.VarChar(255)
   startDate    DateTime?
   inProgressAt DateTime?
   endDate      DateTime?
   isAccepted   Boolean   @default(false)
-  RecoState    RecoState @default(PENDING)
+  RecoStateRecipient    RecoState @default(PENDING)
+  rejectionReasonRecipient String? @db.VarChar(255)
+  RecoStateCompany      RecoState @default(PENDING)
+  rejectionReasonCompany String? @db.VarChar(255)
   companyId    String
   initiatorId  String
   recipientId  String?
@@ -204,8 +231,20 @@ model Project {
   endDate        DateTime?
   priority       Int              @default(0)
   isPublic       Boolean          @default(false)
-  companyId      String
-  projectState   ProjectState     @default(PENDING)
+  companyNumber  Int?
+  companyId      String?
+  companyName    String?          @db.VarChar(50)
+  companyAddress String?          @db.VarChar(255)
+  companyAddressComplement String? @db.VarChar(255)
+  companyPostalCode Int?
+  companyCity    String?          @db.VarChar(50)
+  companyCountry String?          @db.VarChar(50)
+  companyEmail   String?          @db.VarChar(255)
+  companyPhone   String?          @db.VarChar(12)
+  companyJobDomain String?        @db.VarChar(50)
+  ProjectState    ProjectState    @default(PENDING)
+  ProjectChoiceCompany     ProjectChoiceState       @default(PENDING)
+  rejectionReasonCompany  String? @db.VarChar(255)
   userId         String
   retentionDate  DateTime?
   user           User             @relation(fields: [userId], references: [id])
@@ -220,7 +259,8 @@ model CompanyProject {
   projectId          String
   companyId          String
   retentionDate     DateTime?
-  CompanyChoiceState CompanyChoiceState @default(PENDING)
+  UserChoiceState ProjectChoiceState @default(PENDING)
+  rejectionReason    String?            @db.VarChar(255)
   project            Project            @relation(fields: [projectId], references: [id])
   company            Company            @relation(fields: [companyId], references: [id])
 
@@ -290,6 +330,7 @@ model Invoice {
   id            String          @id @default(cuid())
   name         String          @db.VarChar(50)
   address       String          @db.VarChar(255)
+  addressComplement String?    @db.VarChar(255)
   postalCode    Int
   city          String          @db.VarChar(50)
   VATNumber     String?         @db.VarChar(50)
@@ -323,4 +364,26 @@ model RGPD {
   userId        String
   retentionDate DateTime?
   user          User        @relation(fields: [userId], references: [id])
+}
+
+model File {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String
+  mimetype     String
+  size         Int
+  path         String
+  url          String?
+  uploadedAt   DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       String?
+  user         User?    @relation(fields: [userId], references: [id])
+  
+ 
+  category     String?  
+  description  String?  
+  isPublic     Boolean  @default(false)
+  retentionDate DateTime?
+  
+  @@map("files")
 }
