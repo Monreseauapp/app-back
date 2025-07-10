@@ -40,8 +40,13 @@ export class UploadService {
 
       return this.mapToFileResponse(savedFile)
     } catch (error) {
-      if (fs.existsSync(file.path)) {
-        fs.unlinkSync(file.path)
+      const safeUploadsDir = path.resolve('./uploads');
+      const resolvedFilePath = path.resolve(file.path);
+      if (!resolvedFilePath.startsWith(safeUploadsDir)) {
+        throw new BadRequestException('Chemin de fichier non valide');
+      }
+      if (fs.existsSync(resolvedFilePath)) {
+        fs.unlinkSync(resolvedFilePath);
       }
       throw new BadRequestException('Erreur lors de la sauvegarde du fichier')
     }
