@@ -6,9 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common';
-import { CompanyProjectService } from './company-project.service';
-import { Prisma } from 'generated/prisma';
+} from '@nestjs/common'
+import { CompanyProjectService } from './company-project.service'
+import { Prisma } from 'generated/prisma'
 
 @Controller('company-project')
 export class CompanyProjectController {
@@ -16,12 +16,12 @@ export class CompanyProjectController {
 
   @Post()
   create(@Body() createCompanyProjectDto: Prisma.CompanyProjectCreateInput) {
-    return this.companyProjectService.create(createCompanyProjectDto);
+    return this.companyProjectService.create(createCompanyProjectDto)
   }
 
   @Get()
   findAll() {
-    return this.companyProjectService.findAll();
+    return this.companyProjectService.findAll()
   }
 
   @Get(':projectId/:companyId')
@@ -29,7 +29,7 @@ export class CompanyProjectController {
     @Param('projectId') projectId: string,
     @Param('companyId') companyId: string,
   ) {
-    return this.companyProjectService.findOne(projectId, companyId);
+    return this.companyProjectService.findOne(projectId, companyId)
   }
 
   @Patch(':projectId/:companyId')
@@ -42,7 +42,7 @@ export class CompanyProjectController {
       projectId,
       companyId,
       updateCompanyProjectDto,
-    );
+    )
   }
 
   @Delete(':projectId/:companyId')
@@ -50,6 +50,6 @@ export class CompanyProjectController {
     @Param('projectId') projectId: string,
     @Param('companyId') companyId: string,
   ) {
-    return this.companyProjectService.remove(projectId, companyId);
+    return this.companyProjectService.remove(projectId, companyId)
   }
 }
