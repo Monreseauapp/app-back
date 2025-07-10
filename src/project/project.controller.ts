@@ -38,7 +38,6 @@ export class ProjectController {
   findByUserId(@Param('userId') userId: string) {
     return this.projectService.findbyUserId(userId);
   }
-  
   @Patch(':id')
   update(
     @Param('id') id: string,
