@@ -27,7 +27,7 @@ export class ProjectService {
       where: { companyId },
     });
   }
-
+  
   findbyUserId(userId: string) {
     return this.databaseService.project.findMany({
       where: { userId },
