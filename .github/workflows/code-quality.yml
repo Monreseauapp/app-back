@@ -1,0 +1,158 @@
+name: Code Quality & PR Analysis
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  pr-size-check:
+    name: 📏 PR Size Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR size and complexity
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+            });
+
+            let additions = 0;
+            let deletions = 0;
+            let changedFiles = files.length;
+            let nativeFiles = 0;
+            let testFiles = 0;
+            let configFiles = 0;
+
+            files.forEach(file => {
+              additions += file.additions;
+              deletions += file.deletions;
+              
+              // Categorize files
+              if (file.filename.includes('android/') || file.filename.includes('ios/')) {
+                nativeFiles++;
+              }
+              if (file.filename.includes('__tests__') || file.filename.includes('.test.') || file.filename.includes('.spec.')) {
+                testFiles++;
+              }
+              if (file.filename.includes('package.json') || file.filename.includes('.json') || file.filename.includes('.yml') || file.filename.includes('.yaml')) {
+                configFiles++;
+              }
+            });
+
+            const totalChanges = additions + deletions;
+            let sizeLabel = '';
+            let riskLevel = '';
+            let message = '';
+
+            if (totalChanges < 100) {
+              sizeLabel = 'size: XS';
+              riskLevel = 'risk: low';
+              message = '✅ Small PR - Perfect for quick review!';
+            } else if (totalChanges < 300) {
+              sizeLabel = 'size: S';
+              riskLevel = 'risk: low';
+              message = '✅ Small-Medium PR - Good size for thorough review';
+            } else if (totalChanges < 500) {
+              sizeLabel = 'size: M';
+              riskLevel = nativeFiles > 0 ? 'risk: medium' : 'risk: low';
+              message = '⚠️ Medium PR - Consider splitting if possible';
+            } else if (totalChanges < 1000) {
+              sizeLabel = 'size: L';
+              riskLevel = nativeFiles > 0 ? 'risk: high' : 'risk: medium';
+              message = '⚠️ Large PR - Please consider splitting into smaller PRs';
+            } else {
+              sizeLabel = 'size: XL';
+              riskLevel = 'risk: high';
+              message = '🚨 Extra Large PR - This should definitely be split into smaller PRs';
+            }
+
+            // Update labels
+            const existingLabels = pr.labels.filter(label => 
+              !label.name.startsWith('size:') && !label.name.startsWith('risk:'));
+            const newLabels = [...existingLabels.map(l => l.name), sizeLabel, riskLevel];
+
+            await github.rest.issues.setLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              labels: newLabels
+            });
+
+            // Create detailed comment
+            const riskFactors = [];
+            if (nativeFiles > 0) riskFactors.push(`${nativeFiles} native files modified`);
+            if (testFiles === 0 && additions > 50) riskFactors.push('No test files included');
+            if (configFiles > 3) riskFactors.push('Multiple config files changed');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: `## 📊 PR Analysis Report
+
+            ### 📏 Size Metrics
+            - **Files changed:** ${changedFiles}
+            - **Lines added:** ${additions}
+            - **Lines deleted:** ${deletions}
+            - **Total changes:** ${totalChanges}
+
+            ### 📱 React Native Specific
+            - **Native files:** ${nativeFiles} (Android/iOS)
+            - **Test files:** ${testFiles}
+            - **Config files:** ${configFiles}
+
+            ### ⚠️ Risk Assessment
+            ${riskFactors.length > 0 ? '**Risk factors identified:**\n' + riskFactors.map(r => `- ${r}`).join('\n') : '**No significant risk factors detected**'}
+
+            ${message}
+
+            <details>
+            <summary>📋 React Native PR Guidelines</summary>
+
+            - **XS (< 100 lines):** Perfect for hotfixes and small features
+            - **S (100-300 lines):** Ideal for new components or bug fixes
+            - **M (300-500 lines):** Acceptable for features, consider splitting
+            - **L (500-1000 lines):** Large features, should include comprehensive tests
+            - **XL (> 1000 lines):** Too large, split into smaller focused PRs
+
+            **Special considerations:**
+            - PRs touching native code (Android/iOS) require extra review
+            - Always include tests for new functionality
+            - Update documentation for new features
+
+            </details>`
+            });
+
+  code-complexity:
+    name: 🧮 Code Complexity Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install complexity analysis tools
+        run: npm install --save-dev eslint-plugin-complexity plato
+
+      - name: Run complexity analysis
+        run: |
+          npx plato -r -d complexity-report src/
+          echo "Complexity analysis completed"
+
+      - name: Upload complexity report
+        uses: actions/upload-artifact@v4
+        with:
+          name: complexity-report
+          path: complexity-report/
