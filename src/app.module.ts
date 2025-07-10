@@ -14,6 +14,7 @@ import { InvoiceModule } from './invoice/invoice.module';
 import { RgpdModule } from './rgpd/rgpd.module';
 import { RecommandationModule } from './recommandation/recommandation.module';
 import { UsersModule } from './users/users.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UsersModule } from './users/users.module';
     RgpdModule,
     RecommandationModule,
     UsersModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

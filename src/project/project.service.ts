@@ -28,6 +28,12 @@ export class ProjectService {
     });
   }
   
+  findbyUserId(userId: string) {
+    return this.databaseService.project.findMany({
+      where: { userId },
+    });
+  }
+  
   update(id: string, updateProjectDto: Prisma.ProjectUpdateInput) {
     return this.databaseService.project.update({
       where: { id },
