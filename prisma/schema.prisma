@@ -92,11 +92,11 @@ model User {
   email                    String            @unique @db.VarChar(255)
   photoUrl                 String?           @db.VarChar(255)
   jobTitle                 String?           @db.VarChar(50)
-  address                  String            @db.VarChar(255)
+  address                  String?            @db.VarChar(255)
   addressComplement        String?           @db.VarChar(255)
-  postalCode               Int
+  postalCode               Int?
   city                     String            @db.VarChar(50)
-  country                  String            @db.VarChar(50)
+  country                  String?            @db.VarChar(50)
   createdAt                DateTime          @default(now())
   updatedAt                DateTime          @updatedAt
   lastLogin                DateTime?
@@ -132,9 +132,9 @@ model JobDomain {
 model Company {
   id                 String              @id @default(cuid())
   name               String              @unique @db.VarChar(50)
-  address            String              @db.VarChar(255)
+  address            String?              @db.VarChar(255)
   addressComplement String?             @db.VarChar(255)
-  postalCode         Int
+  postalCode         Int?
   city               String              @db.VarChar(50)
   country            String?             @db.VarChar(50)
   createdAt          DateTime            @default(now())
