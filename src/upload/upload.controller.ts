@@ -162,6 +162,7 @@ export class UploadController {
     @Res() res: Response,
   ): Promise<void> {
     const { stream, file } = await this.uploadService.getFileStream(id) as FileStreamResponse
+
     res.set({
       'Content-Type': file.mimetype,
       'Content-Disposition': `attachment; filename="${file.originalName}"`,
@@ -180,6 +181,7 @@ export class UploadController {
       'Content-Type': file.mimetype,
       'Content-Length': file.size.toString(),
     })
+
 
     stream.pipe(res)
   }
