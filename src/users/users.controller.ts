@@ -6,9 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common';
-import { UsersService } from './users.service';
-import { Prisma } from 'generated/prisma';
+} from '@nestjs/common'
+import { UsersService } from './users.service'
+import { Prisma } from 'generated/prisma'
 
 @Controller('users')
 export class UsersController {
@@ -16,27 +16,27 @@ export class UsersController {
 
   @Post()
   create(@Body() createUserDto: Prisma.UserCreateInput) {
-    return this.usersService.create(createUserDto);
+    return this.usersService.create(createUserDto)
   }
 
   @Get()
   findAll() {
-    return this.usersService.findAll();
+    return this.usersService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+    return this.usersService.findOne(id)
   }
 
   @Get('email/:email')
   findByEmail(@Param('email') email: string) {
-    return this.usersService.findByEmail(email);
+    return this.usersService.findByEmail(email)
   }
-  
+
   @Get(':id/company')
   findUserCompany(@Param('id') id: string) {
-    return this.usersService.findUserCompany(id);
+    return this.usersService.findUserCompany(id)
   }
 
   @Patch(':id')
@@ -44,11 +44,11 @@ export class UsersController {
     @Param('id') id: string,
     @Body() updateUserDto: Prisma.UserUpdateInput,
   ) {
-    return this.usersService.update(id, updateUserDto);
+    return this.usersService.update(id, updateUserDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+    return this.usersService.remove(id)
   }
 }

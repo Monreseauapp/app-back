@@ -6,9 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common';
-import { SubscriptionService } from './subscription.service';
-import { Prisma } from 'generated/prisma';
+} from '@nestjs/common'
+import { SubscriptionService } from './subscription.service'
+import { Prisma } from 'generated/prisma'
 
 @Controller('subscription')
 export class SubscriptionController {
@@ -16,17 +16,17 @@ export class SubscriptionController {
 
   @Post()
   create(@Body() createSubscriptionDto: Prisma.SubscriptionCreateInput) {
-    return this.subscriptionService.create(createSubscriptionDto);
+    return this.subscriptionService.create(createSubscriptionDto)
   }
 
   @Get()
   findAll() {
-    return this.subscriptionService.findAll();
+    return this.subscriptionService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.subscriptionService.findOne(id);
+    return this.subscriptionService.findOne(id)
   }
 
   @Patch(':id')
@@ -34,11 +34,11 @@ export class SubscriptionController {
     @Param('id') id: string,
     @Body() updateSubscriptionDto: Prisma.SubscriptionUpdateInput,
   ) {
-    return this.subscriptionService.update(id, updateSubscriptionDto);
+    return this.subscriptionService.update(id, updateSubscriptionDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.subscriptionService.remove(id);
+    return this.subscriptionService.remove(id)
   }
 }

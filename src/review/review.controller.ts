@@ -6,9 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common';
-import { ReviewService } from './review.service';
-import { Prisma } from 'generated/prisma';
+} from '@nestjs/common'
+import { ReviewService } from './review.service'
+import { Prisma } from 'generated/prisma'
 
 @Controller('review')
 export class ReviewController {
@@ -16,22 +16,22 @@ export class ReviewController {
 
   @Post()
   create(@Body() createReviewDto: Prisma.ReviewCreateInput) {
-    return this.reviewService.create(createReviewDto);
+    return this.reviewService.create(createReviewDto)
   }
 
   @Get()
   findAll() {
-    return this.reviewService.findAll();
+    return this.reviewService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.reviewService.findOne(id);
+    return this.reviewService.findOne(id)
   }
 
   @Get('company/:companyId')
   findByCompanyId(@Param('companyId') companyId: string) {
-    return this.reviewService.findbyCompanyId(companyId);
+    return this.reviewService.findbyCompanyId(companyId)
   }
 
   @Patch(':id')
@@ -39,11 +39,11 @@ export class ReviewController {
     @Param('id') id: string,
     @Body() updateReviewDto: Prisma.ReviewUpdateInput,
   ) {
-    return this.reviewService.update(id, updateReviewDto);
+    return this.reviewService.update(id, updateReviewDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.reviewService.remove(id);
+    return this.reviewService.remove(id)
   }
 }

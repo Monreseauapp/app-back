@@ -1,20 +1,20 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { JobDomainController } from './job-domain.controller';
-import { JobDomainService } from './job-domain.service';
+import { Test, TestingModule } from '@nestjs/testing'
+import { JobDomainController } from './job-domain.controller'
+import { JobDomainService } from './job-domain.service'
 
 describe('JobDomainController', () => {
-  let controller: JobDomainController;
+  let controller: JobDomainController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [JobDomainController],
       providers: [JobDomainService],
-    }).compile();
+    }).compile()
 
-    controller = module.get<JobDomainController>(JobDomainController);
-  });
+    controller = module.get<JobDomainController>(JobDomainController)
+  })
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-});
+    expect(controller).toBeDefined()
+  })
+})

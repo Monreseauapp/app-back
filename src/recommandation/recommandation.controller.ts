@@ -6,9 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common';
-import { RecommandationService } from './recommandation.service';
-import { Prisma } from 'generated/prisma';
+} from '@nestjs/common'
+import { RecommandationService } from './recommandation.service'
+import { Prisma } from 'generated/prisma'
 
 @Controller('recommandation')
 export class RecommandationController {
@@ -16,42 +16,42 @@ export class RecommandationController {
 
   @Post()
   create(@Body() createRecommandationDto: Prisma.RecommandationCreateInput) {
-    return this.recommandationService.create(createRecommandationDto);
+    return this.recommandationService.create(createRecommandationDto)
   }
 
   @Get()
   findAll() {
-    return this.recommandationService.findAll();
+    return this.recommandationService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.recommandationService.findOne(id);
+    return this.recommandationService.findOne(id)
   }
-  
+
   @Get('recipient/:recipientId')
   findByRecipientId(@Param('recipientId') recipientId: string) {
-    return this.recommandationService.findByRecipientId(recipientId);
+    return this.recommandationService.findByRecipientId(recipientId)
   }
 
   @Get('initiator/:initiatorId')
   findByInitiatorId(@Param('initiatorId') initiatorId: string) {
-    return this.recommandationService.findByInitiatorId(initiatorId);
+    return this.recommandationService.findByInitiatorId(initiatorId)
   }
 
   @Get('company/:companyId')
   findByCompanyId(@Param('companyId') companyId: string) {
-    return this.recommandationService.findByCompanyId(companyId);
+    return this.recommandationService.findByCompanyId(companyId)
   }
 
   @Get('company-initiators/:companyId')
   findAllByCompanyInitiators(@Param('companyId') companyId: string) {
-    return this.recommandationService.findAllByCompanyInitiators(companyId);
+    return this.recommandationService.findAllByCompanyInitiators(companyId)
   }
 
   @Get('company-recipients/:companyId')
   findAllByCompanyRecipients(@Param('companyId') companyId: string) {
-    return this.recommandationService.findAllByCompanyRecipients(companyId);
+    return this.recommandationService.findAllByCompanyRecipients(companyId)
   }
 
   @Patch(':id')
@@ -59,11 +59,11 @@ export class RecommandationController {
     @Param('id') id: string,
     @Body() updateRecommandationDto: Prisma.RecommandationUpdateInput,
   ) {
-    return this.recommandationService.update(id, updateRecommandationDto);
+    return this.recommandationService.update(id, updateRecommandationDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.recommandationService.remove(id);
+    return this.recommandationService.remove(id)
   }
 }
