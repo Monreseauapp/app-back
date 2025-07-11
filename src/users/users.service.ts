@@ -22,7 +22,8 @@ export class UsersService {
     })
   }
 
-  findByEmail(email: string): Promise<Prisma.UserGetPayload<{}> | null> {
+  findByEmail(email: string): Promise<Prisma.UserGetPayload<object> | null> {
+
     return this.databaseService.user.findUnique({
       where: { email },
     })

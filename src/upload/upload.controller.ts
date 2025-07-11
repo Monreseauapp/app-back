@@ -16,8 +16,19 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 import { extname } from 'path'
 import { Response } from 'express'
+import { Readable } from 'stream'
 import { UploadService } from './upload.service'
 import { UploadFileDto, FileResponseDto } from './dto/upload-file.dto'
+
+interface FileStreamResponse {
+  stream: Readable
+  file: {
+    mimetype: string
+    originalName: string
+    size: number
+  }
+}
+
 
 const storage = diskStorage({
   destination: './uploads',
@@ -28,11 +39,14 @@ const storage = diskStorage({
   },
 })
 
+type FileFilterCallback = (error: Error | null, acceptFile: boolean) => void
+
 const imageFileFilter = (
-  req: any,
+  req: Express.Request,
   file: Express.Multer.File,
-  callback: any,
-) => {
+  callback: FileFilterCallback,
+): void => {
+
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
     return callback(new Error('Seuls les fichiers image sont autorisés'), false)
   }
@@ -40,17 +54,23 @@ const imageFileFilter = (
 }
 
 const documentFileFilter = (
-  req: any,
+  req: Express.Request,
   file: Express.Multer.File,
-  callback: any,
-) => {
+  callback: FileFilterCallback,
+): void => {
+
   if (!file.originalname.match(/\.(pdf|doc|docx|txt|xlsx|xls)$/i)) {
     return callback(new Error('Type de document non autorisé'), false)
   }
   callback(null, true)
 }
 
-const allFilesFilter = (req: any, file: Express.Multer.File, callback: any) => {
+const allFilesFilter = (
+  req: Express.Request,
+  file: Express.Multer.File,
+  callback: FileFilterCallback,
+): void => {
+
   if (file.originalname.match(/\.(exe|bat|cmd|sh|zip|rar)$/i)) {
     return callback(new Error('Type de fichier non autorisé'), false)
   }
@@ -146,12 +166,13 @@ export class UploadController {
     @Param('id') id: string,
     @Res() res: Response,
   ): Promise<void> {
-    const { stream, file } = await this.uploadService.getFileStream(id)
+    const { stream, file }: FileStreamResponse = await this.uploadService.getFileStream(id)
 
     res.set({
       'Content-Type': file.mimetype,
       'Content-Disposition': `attachment; filename="${file.originalName}"`,
-      'Content-Length': file.size,
+      'Content-Length': file.size.toString(),
+
     })
 
     stream.pipe(res)
@@ -159,11 +180,12 @@ export class UploadController {
 
   @Get('view/:id')
   async viewFile(@Param('id') id: string, @Res() res: Response): Promise<void> {
-    const { stream, file } = await this.uploadService.getFileStream(id)
+    const { stream, file }: FileStreamResponse = await this.uploadService.getFileStream(id)
 
     res.set({
       'Content-Type': file.mimetype,
-      'Content-Length': file.size,
+      'Content-Length': file.size.toString(),
+
     })
 
     stream.pipe(res)
@@ -178,8 +200,8 @@ export class UploadController {
   @Get()
   async searchFiles(
     @Query('userId') userId?: string,
-    @Query('category') category?: string,
-    @Query('mimetype') mimetype?: string,
+    @Query('category') _category?: string,
+    @Query('mimetype') _mimetype?: string,
   ): Promise<FileResponseDto[]> {
     if (userId) {
       return this.uploadService.getUserFiles(userId)
