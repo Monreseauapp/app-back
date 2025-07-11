@@ -4,14 +4,20 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   pr-size-check:
     name: 📏 PR Size Analysis
     runs-on: ubuntu-latest
     steps:
       - name: Check PR size and complexity
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const pr = context.payload.pull_request;
             const { data: files } = await github.rest.pulls.listFiles({
@@ -70,29 +76,34 @@ jobs:
               message = '🚨 Extra Large PR - This should definitely be split into smaller PRs';
             }
 
-            // Update labels
-            const existingLabels = pr.labels.filter(label => 
-              !label.name.startsWith('size:') && !label.name.startsWith('risk:'));
-            const newLabels = [...existingLabels.map(l => l.name), sizeLabel, riskLevel];
+            // Update labels with error handling
+            try {
+              const existingLabels = pr.labels.filter(label => 
+                !label.name.startsWith('size:') && !label.name.startsWith('risk:'));
+              const newLabels = [...existingLabels.map(l => l.name), sizeLabel, riskLevel];
 
-            await github.rest.issues.setLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: pr.number,
-              labels: newLabels
-            });
+              await github.rest.issues.setLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                labels: newLabels
+              });
+            } catch (error) {
+              console.log('Failed to set labels:', error.message);
+            }
 
-            // Create detailed comment
+            // Create detailed comment with error handling
             const riskFactors = [];
             if (nativeFiles > 0) riskFactors.push(`${nativeFiles} native files modified`);
             if (testFiles === 0 && additions > 50) riskFactors.push('No test files included');
             if (configFiles > 3) riskFactors.push('Multiple config files changed');
 
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: pr.number,
-              body: `## 📊 PR Analysis Report
+            try {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `## 📊 PR Analysis Report
 
             ### 📏 Size Metrics
             - **Files changed:** ${changedFiles}
@@ -125,7 +136,10 @@ jobs:
             - Update documentation for new features
 
             </details>`
-            });
+              });
+            } catch (error) {
+              console.log('Failed to create comment:', error.message);
+            }
 
   code-complexity:
     name: 🧮 Code Complexity Analysis

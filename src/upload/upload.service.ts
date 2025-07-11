@@ -7,6 +7,23 @@ import { DatabaseService } from 'src/database/database.service'
 import { UploadFileDto, FileResponseDto } from './dto/upload-file.dto'
 import * as fs from 'fs'
 import * as path from 'path'
+import { Prisma } from 'generated/prisma'
+
+// Définir un type pour la sélection des champs nécessaires
+type FileSelect = Prisma.FileGetPayload<{
+  select: {
+    id: true
+    filename: true
+    originalName: true
+    mimetype: true
+    size: true
+    url: true
+    uploadedAt: true
+    category: true
+    description: true
+    isPublic: true
+  }
+}>
 
 @Injectable()
 export class UploadService {
@@ -39,7 +56,7 @@ export class UploadService {
       })
 
       return this.mapToFileResponse(savedFile)
-    } catch (error) {
+    } catch {
       const safeUploadsDir = path.resolve('./uploads')
       const resolvedFilePath = path.resolve(file.path)
       if (!resolvedFilePath.startsWith(safeUploadsDir)) {
@@ -69,6 +86,10 @@ export class UploadService {
         uploadedFiles.push(result)
       } catch (error) {
         failedFiles.push(file.originalname)
+        console.error(
+          `Erreur lors de l'upload du fichier ${file.originalname}:`,
+          error,
+        )
       }
     }
 
@@ -139,23 +160,27 @@ export class UploadService {
     return { stream, file }
   }
 
-  private mapToFileResponse(file: any): FileResponseDto {
+  private mapToFileResponse(file: FileSelect): FileResponseDto {
     return {
       id: file.id,
       filename: file.filename,
       originalName: file.originalName,
       mimetype: file.mimetype,
       size: file.size,
-      url: file.url,
+      url: file.url ?? '',
       uploadedAt: file.uploadedAt,
-      category: file.category,
-      description: file.description,
+      category: file.category ?? undefined,
+      description: file.description ?? undefined,
       isPublic: file.isPublic,
     }
   }
 
   static fileFilter(allowedTypes: string[]) {
-    return (req: any, file: Express.Multer.File, callback: any) => {
+    return (
+      _req: any,
+      file: Express.Multer.File,
+      callback: (error: Error | null, acceptFile: boolean) => void,
+    ) => {
       if (allowedTypes.some((type) => file.mimetype.includes(type))) {
         callback(null, true)
       } else {
