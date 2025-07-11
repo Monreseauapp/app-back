@@ -29,6 +29,7 @@ interface FileStreamResponse {
   }
 }
 
+
 const storage = diskStorage({
   destination: './uploads',
   filename: (req, file, callback) => {
@@ -45,6 +46,7 @@ const imageFileFilter = (
   file: Express.Multer.File,
   callback: FileFilterCallback,
 ): void => {
+
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
     return callback(new Error('Seuls les fichiers image sont autorisés'), false)
   }
@@ -56,6 +58,7 @@ const documentFileFilter = (
   file: Express.Multer.File,
   callback: FileFilterCallback,
 ): void => {
+
   if (!file.originalname.match(/\.(pdf|doc|docx|txt|xlsx|xls)$/i)) {
     return callback(new Error('Type de document non autorisé'), false)
   }
@@ -67,6 +70,7 @@ const allFilesFilter = (
   file: Express.Multer.File,
   callback: FileFilterCallback,
 ): void => {
+
   if (file.originalname.match(/\.(exe|bat|cmd|sh|zip|rar)$/i)) {
     return callback(new Error('Type de fichier non autorisé'), false)
   }
@@ -168,6 +172,7 @@ export class UploadController {
       'Content-Type': file.mimetype,
       'Content-Disposition': `attachment; filename="${file.originalName}"`,
       'Content-Length': file.size.toString(),
+
     })
 
     stream.pipe(res)
@@ -180,6 +185,7 @@ export class UploadController {
     res.set({
       'Content-Type': file.mimetype,
       'Content-Length': file.size.toString(),
+
     })
 
     stream.pipe(res)
