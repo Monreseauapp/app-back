@@ -30,6 +30,7 @@ interface FileStreamResponse {
 }
 
 
+
 const storage = diskStorage({
   destination: './uploads',
   filename: (req, file, callback) => {
@@ -47,6 +48,7 @@ const imageFileFilter = (
   callback: FileFilterCallback,
 ): void => {
 
+
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
     return callback(new Error('Seuls les fichiers image sont autorisés'), false)
   }
@@ -59,11 +61,11 @@ const documentFileFilter = (
   callback: FileFilterCallback,
 ): void => {
 
+
   if (!file.originalname.match(/\.(pdf|doc|docx|txt|xlsx|xls)$/i)) {
     return callback(new Error('Type de document non autorisé'), false)
   }
   callback(null, true)
-}
 
 const allFilesFilter = (
   req: Express.Request,
@@ -168,10 +170,12 @@ export class UploadController {
   ): Promise<void> {
     const { stream, file }: FileStreamResponse = await this.uploadService.getFileStream(id)
 
+
     res.set({
       'Content-Type': file.mimetype,
       'Content-Disposition': `attachment; filename="${file.originalName}"`,
       'Content-Length': file.size.toString(),
+
 
     })
 
@@ -187,6 +191,7 @@ export class UploadController {
       'Content-Length': file.size.toString(),
 
     })
+
 
     stream.pipe(res)
   }

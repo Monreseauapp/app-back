@@ -22,6 +22,8 @@ async function bootstrap() {
   const host = process.env.HOST || '0.0.0.0'
 
 
+
+
   await app.listen(port, host)
   console.log(`🚀 Application is running on: http://${host}:${port}/api`)
 }
