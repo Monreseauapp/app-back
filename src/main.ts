@@ -7,13 +7,16 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:8081',
+      'https://localhost:8081',
       'http://localhost:3000',
-      'http://ns3093511.ip-54-36-122.eu/',
+      'http://ns3093511.ip-54-36-122.eu',
+      'https://ns3093511.ip-54-36-122.eu',
       'http://54.36.122.34',
+      'https://54.36.122.34',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
-    allowedHeaders: 'Content-Type, Accept, Authorization',
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Requested-With'],
   })
 
   const port = process.env.PORT || 3000
