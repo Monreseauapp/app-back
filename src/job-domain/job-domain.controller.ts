@@ -6,9 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common';
-import { JobDomainService } from './job-domain.service';
-import { Prisma } from 'generated/prisma';
+} from '@nestjs/common'
+import { JobDomainService } from './job-domain.service'
+import { Prisma } from 'generated/prisma'
 
 @Controller('job-domain')
 export class JobDomainController {
@@ -16,17 +16,17 @@ export class JobDomainController {
 
   @Post()
   create(@Body() createJobDomainDto: Prisma.JobDomainCreateInput) {
-    return this.jobDomainService.create(createJobDomainDto);
+    return this.jobDomainService.create(createJobDomainDto)
   }
 
   @Get()
   findAll() {
-    return this.jobDomainService.findAll();
+    return this.jobDomainService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.jobDomainService.findOne(id);
+    return this.jobDomainService.findOne(id)
   }
 
   @Patch(':id')
@@ -34,11 +34,11 @@ export class JobDomainController {
     @Param('id') id: string,
     @Body() updateJobDomainDto: Prisma.JobDomainUpdateInput,
   ) {
-    return this.jobDomainService.update(id, updateJobDomainDto);
+    return this.jobDomainService.update(id, updateJobDomainDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.jobDomainService.remove(id);
+    return this.jobDomainService.remove(id)
   }
 }

@@ -6,9 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common';
-import { PaymentMethodService } from './payment-method.service';
-import { Prisma } from 'generated/prisma';
+} from '@nestjs/common'
+import { PaymentMethodService } from './payment-method.service'
+import { Prisma } from 'generated/prisma'
 
 @Controller('payment-method')
 export class PaymentMethodController {
@@ -16,17 +16,17 @@ export class PaymentMethodController {
 
   @Post()
   create(@Body() createPaymentMethodDto: Prisma.PaymentMethodCreateInput) {
-    return this.paymentMethodService.create(createPaymentMethodDto);
+    return this.paymentMethodService.create(createPaymentMethodDto)
   }
 
   @Get()
   findAll() {
-    return this.paymentMethodService.findAll();
+    return this.paymentMethodService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.paymentMethodService.findOne(id);
+    return this.paymentMethodService.findOne(id)
   }
 
   @Patch(':id')
@@ -34,11 +34,11 @@ export class PaymentMethodController {
     @Param('id') id: string,
     @Body() updatePaymentMethodDto: Prisma.PaymentMethodUpdateInput,
   ) {
-    return this.paymentMethodService.update(id, updatePaymentMethodDto);
+    return this.paymentMethodService.update(id, updatePaymentMethodDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.paymentMethodService.remove(id);
+    return this.paymentMethodService.remove(id)
   }
 }

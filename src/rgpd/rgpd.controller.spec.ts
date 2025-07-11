@@ -1,20 +1,20 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { RgpdController } from './rgpd.controller';
-import { RgpdService } from './rgpd.service';
+import { Test, TestingModule } from '@nestjs/testing'
+import { RgpdController } from './rgpd.controller'
+import { RgpdService } from './rgpd.service'
 
 describe('RgpdController', () => {
-  let controller: RgpdController;
+  let controller: RgpdController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [RgpdController],
       providers: [RgpdService],
-    }).compile();
+    }).compile()
 
-    controller = module.get<RgpdController>(RgpdController);
-  });
+    controller = module.get<RgpdController>(RgpdController)
+  })
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-});
+    expect(controller).toBeDefined()
+  })
+})

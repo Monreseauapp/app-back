@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { Prisma } from 'generated/prisma';
-import { DatabaseService } from 'src/database/database.service';
+import { Injectable } from '@nestjs/common'
+import { Prisma } from 'generated/prisma'
+import { DatabaseService } from 'src/database/database.service'
 
 @Injectable()
 export class RecommandationService {
@@ -9,35 +9,35 @@ export class RecommandationService {
   create(createRecommandationDto: Prisma.RecommandationCreateInput) {
     return this.databaseService.recommandation.create({
       data: createRecommandationDto,
-    });
+    })
   }
 
   findAll() {
-    return this.databaseService.recommandation.findMany();
+    return this.databaseService.recommandation.findMany()
   }
 
   findOne(id: string) {
     return this.databaseService.recommandation.findUnique({
       where: { id },
-    });
+    })
   }
-  
+
   findByRecipientId(recipientId: string) {
     return this.databaseService.recommandation.findMany({
       where: { recipientId },
-    });
+    })
   }
-  
+
   findByInitiatorId(initiatorId: string) {
     return this.databaseService.recommandation.findMany({
       where: { initiatorId },
-    });
+    })
   }
 
   findByCompanyId(companyId: string) {
     return this.databaseService.recommandation.findMany({
       where: { companyId },
-    });
+    })
   }
 
   findAllByCompanyInitiators(companyId: string) {
@@ -47,7 +47,7 @@ export class RecommandationService {
           companyId: companyId,
         },
       },
-    });
+    })
   }
 
   findAllByCompanyRecipients(companyId: string) {
@@ -57,7 +57,7 @@ export class RecommandationService {
           companyId: companyId,
         },
       },
-    });
+    })
   }
 
   update(
@@ -67,12 +67,12 @@ export class RecommandationService {
     return this.databaseService.recommandation.update({
       where: { id },
       data: updateRecommandationDto,
-    });
+    })
   }
 
   remove(id: string) {
     return this.databaseService.recommandation.delete({
       where: { id },
-    });
+    })
   }
 }

@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
-import { RgpdService } from './rgpd.service';
-import { RgpdController } from './rgpd.controller';
+import { Module } from '@nestjs/common'
+import { RgpdService } from './rgpd.service'
+import { RgpdController } from './rgpd.controller'
 
 @Module({
   controllers: [RgpdController],

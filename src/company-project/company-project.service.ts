@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { Prisma } from 'generated/prisma';
-import { DatabaseService } from 'src/database/database.service';
+import { Injectable } from '@nestjs/common'
+import { Prisma } from 'generated/prisma'
+import { DatabaseService } from 'src/database/database.service'
 
 @Injectable()
 export class CompanyProjectService {
@@ -9,11 +9,11 @@ export class CompanyProjectService {
   create(createCompanyProjectDto: Prisma.CompanyProjectCreateInput) {
     return this.databaseService.companyProject.create({
       data: createCompanyProjectDto,
-    });
+    })
   }
 
   findAll() {
-    return this.databaseService.companyProject.findMany();
+    return this.databaseService.companyProject.findMany()
   }
 
   findOne(projectId: string, companyId: string) {
@@ -24,7 +24,7 @@ export class CompanyProjectService {
           companyId,
         },
       },
-    });
+    })
   }
 
   update(
@@ -40,7 +40,7 @@ export class CompanyProjectService {
         },
       },
       data: updateCompanyProjectDto,
-    });
+    })
   }
 
   remove(projectId: string, companyId: string) {
@@ -51,6 +51,6 @@ export class CompanyProjectService {
           companyId,
         },
       },
-    });
+    })
   }
 }
