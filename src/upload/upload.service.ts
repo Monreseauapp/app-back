@@ -87,7 +87,9 @@ export class UploadService {
       } catch (error) {
         failedFiles.push(file.originalname)
         console.error(
-          `Erreur lors de l'upload du fichier ${file.originalname}:`,
+          "Erreur lors de l'upload du fichier %s:",
+          file.originalname,
+
           error,
         )
       }
