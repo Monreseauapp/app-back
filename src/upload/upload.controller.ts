@@ -29,8 +29,6 @@ interface FileStreamResponse {
   }
 }
 
-
-
 const storage = diskStorage({
   destination: './uploads',
   filename: (req, file, callback) => {
@@ -47,8 +45,6 @@ const imageFileFilter = (
   file: Express.Multer.File,
   callback: FileFilterCallback,
 ): void => {
-
-
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
     return callback(new Error('Seuls les fichiers image sont autorisés'), false)
   }
@@ -60,19 +56,16 @@ const documentFileFilter = (
   file: Express.Multer.File,
   callback: FileFilterCallback,
 ): void => {
-
-
   if (!file.originalname.match(/\.(pdf|doc|docx|txt|xlsx|xls)$/i)) {
     return callback(new Error('Type de document non autorisé'), false)
   }
   callback(null, true)
-
+}
 const allFilesFilter = (
   req: Express.Request,
   file: Express.Multer.File,
   callback: FileFilterCallback,
 ): void => {
-
   if (file.originalname.match(/\.(exe|bat|cmd|sh|zip|rar)$/i)) {
     return callback(new Error('Type de fichier non autorisé'), false)
   }
@@ -168,15 +161,13 @@ export class UploadController {
     @Param('id') id: string,
     @Res() res: Response,
   ): Promise<void> {
-    const { stream, file }: FileStreamResponse = await this.uploadService.getFileStream(id)
-
+    const result = await this.uploadService.getFileStream(id)
+    const { stream, file } = result as FileStreamResponse
 
     res.set({
       'Content-Type': file.mimetype,
       'Content-Disposition': `attachment; filename="${file.originalName}"`,
       'Content-Length': file.size.toString(),
-
-
     })
 
     stream.pipe(res)
@@ -184,14 +175,13 @@ export class UploadController {
 
   @Get('view/:id')
   async viewFile(@Param('id') id: string, @Res() res: Response): Promise<void> {
-    const { stream, file }: FileStreamResponse = await this.uploadService.getFileStream(id)
+    const result = await this.uploadService.getFileStream(id)
+    const { stream, file } = result as FileStreamResponse
 
     res.set({
       'Content-Type': file.mimetype,
       'Content-Length': file.size.toString(),
-
     })
-
 
     stream.pipe(res)
   }
@@ -205,8 +195,6 @@ export class UploadController {
   @Get()
   async searchFiles(
     @Query('userId') userId?: string,
-    @Query('category') _category?: string,
-    @Query('mimetype') _mimetype?: string,
   ): Promise<FileResponseDto[]> {
     if (userId) {
       return this.uploadService.getUserFiles(userId)
