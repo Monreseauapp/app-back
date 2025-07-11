@@ -56,7 +56,6 @@ const documentFileFilter = (
   file: Express.Multer.File,
   callback: FileFilterCallback,
 ): void => {
-
   if (!file.originalname.match(/\.(pdf|doc|docx|txt|xlsx|xls)$/i)) {
     return callback(new Error('Type de document non autorisé'), false)
   }
@@ -162,8 +161,7 @@ export class UploadController {
     @Param('id') id: string,
     @Res() res: Response,
   ): Promise<void> {
-    const result = await this.uploadService.getFileStream(id)
-    const { stream, file } = result as FileStreamResponse
+    const { stream, file } = await this.uploadService.getFileStream(id) as FileStreamResponse
 
     res.set({
       'Content-Type': file.mimetype,
@@ -179,12 +177,9 @@ export class UploadController {
     const result = await this.uploadService.getFileStream(id)
     const { stream, file } = result as FileStreamResponse
 
-
-
     res.set({
       'Content-Type': file.mimetype,
       'Content-Length': file.size.toString(),
-
     })
 
 
