@@ -9,11 +9,13 @@ import {
 } from '@nestjs/common'
 import { CompanyService } from './company.service'
 import { Prisma } from 'generated/prisma'
+import { Public } from 'src/decorators/auth.decorator'
 
 @Controller('company')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
+  @Public()
   @Post()
   create(@Body() createCompanyDto: Prisma.CompanyCreateInput) {
     return this.companyService.create(createCompanyDto)
