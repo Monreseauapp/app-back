@@ -34,10 +34,10 @@ export class UsersController {
         console.error('Error generating QR code:', err)
         return undefined
       })
-    const user = this.usersService.create(createUserDto)
+    const user = await this.usersService.create(createUserDto)
     return {
       message: 'User created successfully',
-      id: (await user).id,
+      id: user.id,
       qrCode,
       secret: key.secret,
     }
