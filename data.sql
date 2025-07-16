@@ -117,5 +117,5 @@ INSERT INTO "Invoice" (
 ('inv1', 'Invoice 1', '10 Rue de Paris', NULL, 75001, 'Paris', 'FR123', NOW() - INTERVAL '1 month', NOW(), NOW(), NOW() + INTERVAL '30 days', NOW(), 'PAID', NULL, 100.0, 'EUR', 20.0, 'sub1', 'PAID'),
 ('inv2', 'Invoice 2', '22 Avenue des Champs', NULL, 69002, 'Lyon', 'FR124', NOW() - INTERVAL '2 months', NOW(), NOW(), NOW() + INTERVAL '30 days', NULL, 'SENT', NULL, 50.0, 'USD', 10.0, 'sub2', 'PENDING'),
 ('inv3', 'Invoice 3', '5 Boulevard Saint-Michel', NULL, 13003, 'Marseille', 'FR125', NOW() - INTERVAL '3 months', NOW(), NOW(), NOW() + INTERVAL '30 days', NULL, 'OVERDUE', NULL, 75.0, 'EUR', 15.0, 'sub3', 'FAILED'),
-('inv4', 'Invoice 4', '8 Place Massena', NULL, 6000, 'Nice', 'FR126', NOW() - INTERVAL '4 months', NOW(), NOW(), NOW() + INTERVAL '30 days', NULL, 'DARFT', NULL, 200.0, 'USD', 40.0, 'sub4', 'PENDING'),
+('inv4', 'Invoice 4', '8 Place Massena', NULL, 6000, 'Nice', 'FR126', NOW() - INTERVAL '4 months', NOW(), NOW(), NOW() + INTERVAL '30 days', NULL, 'DRAFT', NULL, 200.0, 'USD', 40.0, 'sub4', 'PENDING'),
 ('inv5', 'Invoice 5', '15 Rue du Capitole', NULL, 31000, 'Toulouse', 'FR127', NOW() - INTERVAL '5 months', NOW(), NOW(), NOW() + INTERVAL '30 days', NULL, 'CANCELED', NULL, 150.0, 'EUR', 30.0, 'sub5', 'PAID');
