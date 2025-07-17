@@ -64,6 +64,7 @@ export class UsersController {
     return this.usersService.findUserCompany(id)
   }
 
+  @Public()
   @Patch(':id')
   update(
     @Param('id') id: string,
