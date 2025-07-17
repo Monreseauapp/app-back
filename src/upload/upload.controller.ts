@@ -162,8 +162,7 @@ export class UploadController {
     @Param('id') id: string,
     @Res() res: Response,
   ): Promise<void> {
-    const result = await this.uploadService.getFileStream(id)
-    const { stream, file } = result as FileStreamResponse
+    const { stream, file } = await this.uploadService.getFileStream(id) as FileStreamResponse
 
     res.set({
       'Content-Type': file.mimetype,
