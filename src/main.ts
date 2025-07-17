@@ -22,6 +22,7 @@ async function bootstrap() {
       'Authorization',
       'X-Requested-With',
     ],
+
   })
 
   const port = process.env.PORT || 3000
