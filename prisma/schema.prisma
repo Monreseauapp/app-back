@@ -97,7 +97,6 @@ model User {
   postalCode               Int?
   city                     String            @db.VarChar(50)
   country                  String?            @db.VarChar(50)
-
   createdAt                DateTime          @default(now())
   updatedAt                DateTime          @updatedAt
   lastLogin                DateTime?
@@ -107,7 +106,7 @@ model User {
   companyId                String?
   isAdmin                  Boolean           @default(false)
   twoFaSecret            String?           @db.VarChar(255)
-  rententionDate           DateTime
+  rententionDate           DateTime?
   consentTerms            Boolean           @default(false)
   consentMarketing        Boolean           @default(false)
   allowRecommendationDataAccess Boolean @default(false)
