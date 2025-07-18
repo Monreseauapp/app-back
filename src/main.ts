@@ -16,6 +16,7 @@ async function bootstrap() {
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+    
     allowedHeaders: [
       'Content-Type',
       'Accept',
@@ -23,6 +24,8 @@ async function bootstrap() {
       'X-Requested-With',
     ],
 
+
+                 
   })
 
   const port = process.env.PORT || 3000
