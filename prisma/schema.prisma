@@ -106,7 +106,7 @@ model User {
   companyId                String?
   isAdmin                  Boolean           @default(false)
   twoFaSecret            String?           @db.VarChar(255)
-  retentionDate            DateTime?
+  retentionDate            DateTime?        @default(now())
   consentTerms            Boolean           @default(false)
   consentMarketing        Boolean           @default(false)
   allowRecommendationDataAccess Boolean @default(false)
