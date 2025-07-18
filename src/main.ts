@@ -1,13 +1,12 @@
-import { NestFactory } from '@nestjs/core'
-import { AppModule } from './app.module'
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AppModule);
 
   app.enableCors({
     origin: [
       'http://localhost:8081',
-      'https://localhost:8081',
       'http://localhost:3000',
       'http://ns3093511.ip-54-36-122.eu',
       'https://ns3093511.ip-54-36-122.eu',
@@ -16,23 +15,14 @@ async function bootstrap() {
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
-    
-    allowedHeaders: [
-      'Content-Type',
-      'Accept',
-      'Authorization',
-      'X-Requested-With',
-    ],
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Requested-With', 'x-api-key'],
+  });
 
+  const port = process.env.PORT || 3000;
+  const host = process.env.HOST || '0.0.0.0';
 
-                 
-  })
-
-  const port = process.env.PORT || 3000
-  const host = process.env.HOST || '0.0.0.0'
-
-  await app.listen(port, host)
-  console.log(`🚀 Application is running on: http://${host}:${port}`)
+  await app.listen(port, host);
+  console.log(`🚀 Application is running on: http://${host}:${port}`);
 }
 
-void bootstrap()
+void bootstrap();

@@ -1,5 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
 import { AppService } from './app.service'
+import { ApiKeyPublic } from './common/decorators/api-key.decorator'
+import { AuthPublic } from './common/decorators/auth.decorator'
 
 @Controller()
 export class AppController {
@@ -8,5 +10,18 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello()
+  }
+
+  @ApiKeyPublic()
+  @AuthPublic()
+  @Get('health')
+  getHealth() {
+    return { status: 'ok' }
+  }
+
+  @AuthPublic()
+  @Get('protected')
+  getProtected() {
+    return { message: 'This route requires API key' }
   }
 }
