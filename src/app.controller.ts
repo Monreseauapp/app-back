@@ -19,5 +19,4 @@ export class AppController {
     return { status: 'ok' }
   }
 
-  // Removed the `getProtected` method and its associated route.
 }
