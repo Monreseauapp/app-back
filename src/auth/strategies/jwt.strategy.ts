@@ -13,7 +13,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
     const options: StrategyOptions = {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: (process.env.JWT_SECRET as string) || '',
+      secretOrKey: (() => {
+        if (!process.env.JWT_SECRET || process.env.JWT_SECRET.trim() === '') {
+          throw new Error('JWT_SECRET environment variable is not set or is empty. The application cannot start.');
+        }
+        return process.env.JWT_SECRET;
+      })(),
     }
     super(options)
   }
