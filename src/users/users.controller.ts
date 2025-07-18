@@ -13,6 +13,10 @@ import { genSalt, hash } from 'bcryptjs'
 import { AuthPublic } from 'src/common/decorators/auth.decorator'
 import { Totp } from 'time2fa'
 import * as qrcode from 'qrcode'
+import { genSalt, hash } from 'bcryptjs'
+import { Public } from 'src/decorators/auth.decorator'
+import { Totp } from 'time2fa'
+import * as qrcode from 'qrcode'
 
 @Controller('users')
 export class UsersController {
@@ -20,6 +24,27 @@ export class UsersController {
 
   @AuthPublic()
   @Post()
+  async create(@Body() createUserDto: Prisma.UserCreateInput) {
+    const salt = await genSalt(10)
+    createUserDto.password = await hash(createUserDto.password, salt)
+    const key = Totp.generateKey({
+      issuer: 'Mon Réseau',
+      user: createUserDto.email,
+    })
+    createUserDto.twoFaSecret = key.secret
+    const qrCode: string | undefined = await qrcode
+      .toDataURL(key.url)
+      .catch((err) => {
+        console.error('Error generating QR code:', err)
+        return undefined
+      })
+    const user = await this.usersService.create(createUserDto)
+    return {
+      message: 'User created successfully',
+      id: user.id,
+      qrCode,
+      secret: key.secret,
+    }
   async create(@Body() createUserDto: Prisma.UserCreateInput) {
     const salt = await genSalt(10)
     createUserDto.password = await hash(createUserDto.password, salt)
