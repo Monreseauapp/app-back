@@ -20,7 +20,6 @@ export class UsersController {
 
   @AuthPublic()
   @Post()
- 
   async create(@Body() createUserDto: Prisma.UserCreateInput) {
     const salt = await genSalt(10)
     createUserDto.password = await hash(createUserDto.password, salt)

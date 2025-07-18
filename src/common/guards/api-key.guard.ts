@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { ConfigService } from '@nestjs/config'
-import { API_KEY_PUBLIC_KEY } from '../decorators/api-key.decorator'
+import { IS_API_KEY_PUBLIC } from '../decorators/api-key.decorator'
 import { Request } from 'express'
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
@@ -16,7 +16,7 @@ export class ApiKeyGuard implements CanActivate {
   ) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_API_KEY_PUBLIC, [
       context.getHandler(),
       context.getClass(),
     ])

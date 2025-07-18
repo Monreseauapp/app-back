@@ -17,7 +17,7 @@ import { JwtStrategy } from './strategies/jwt.strategy'
   ],
   controllers: [AuthController],
   providers: [
-    { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: 'APP_GUARD', useClass: AuthGuard },
     AuthService,
     JwtStrategy,
   ],
