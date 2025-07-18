@@ -183,7 +183,6 @@ export class UploadController {
       'Content-Length': file.size.toString(),
     })
 
-
     stream.pipe(res)
   }
 
