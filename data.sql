@@ -10,7 +10,7 @@ INSERT INTO "JobDomain" (id, domaine, "createdAt", "updatedAt") VALUES
 INSERT INTO "User" (
   id, linkedin, website, youtube, instagram, "lastName", "firstName", email, "photoUrl",
   "jobTitle", address, "addressComplement", "postalCode", city, country, "createdAt", "updatedAt", "lastLogin", phone,
-  password, "domainId", "companyId", "isAdmin", "rententionDate", "consentTerms", "consentMarketing"
+  password, "domainId", "companyId", "isAdmin", "retentionDate", "consentTerms", "consentMarketing"
 ) VALUES
 ('user1', 'https://linkedin.com/in/johnsmith', 'https://johnsmith.dev', NULL, NULL, 'Smith', 'John', 'john.smith@acme.com', NULL, 'Lead Developer', '10 Rue de Paris', NULL, 75001, 'Paris', 'France', NOW(), NOW(), NOW(), '0600000001', 'pw1', 'job1', 'comp1', TRUE, NOW(), TRUE, TRUE),
 ('user2', 'https://linkedin.com/in/janedoe', 'https://janedoe.com', NULL, NULL, 'Doe', 'Jane', 'jane.doe@beta.com', NULL, 'Marketing Manager', '22 Avenue des Champs', NULL, 69002, 'Lyon', 'France', NOW(), NOW(), NOW(), '0600000002', 'pw2', 'job2', 'comp2', FALSE, NOW(), TRUE, FALSE),
