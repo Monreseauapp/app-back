@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 import { Request } from 'express'
 import { IS_PUBLIC_KEY } from 'src/common/decorators/auth.decorator'
+import { timingSafeEqual } from 'crypto'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -57,7 +58,15 @@ export class AuthGuard implements CanActivate {
       return false
     }
 
-    return apiKeyHeader === validApiKey
+    if (typeof apiKeyHeader !== 'string' || typeof validApiKey !== 'string') {
+      return false
+    }
+    const apiKeyBuffer = Buffer.from(apiKeyHeader, 'utf-8')
+    const validApiKeyBuffer = Buffer.from(validApiKey, 'utf-8')
+    if (apiKeyBuffer.length !== validApiKeyBuffer.length) {
+      return false
+    }
+    return timingSafeEqual(apiKeyBuffer, validApiKeyBuffer)
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
