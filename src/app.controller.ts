@@ -22,6 +22,6 @@ export class AppController {
   @AuthPublic()
   @Get('protected')
   getProtected() {
-    return { message: 'This route requires API key' }
+    return { message: 'This route is publicly accessible' }
   }
 }
