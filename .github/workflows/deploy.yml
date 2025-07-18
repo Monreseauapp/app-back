@@ -35,6 +35,7 @@ jobs:
           script: |
             cd ${{ secrets.PATH_TO_APP }}
             git stash
+            git stash
             git pull origin master
             git stash pop || true
             npm i
