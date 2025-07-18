@@ -21,7 +21,7 @@ export class ApiKeyGuard implements CanActivate {
       context.getClass(),
     ])
 
-    console.log('🔍 ApiKeyGuard - isPublic:', isPublic)
+    this.logger.log(`🔍 ApiKeyGuard - isPublic: ${isPublic}`);
 
     if (isPublic) return true
 
