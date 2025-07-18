@@ -18,6 +18,4 @@ export class AppController {
   getHealth() {
     return { status: 'ok' }
   }
-
-// Removed the `getProtected` method and its associated route.
 }
