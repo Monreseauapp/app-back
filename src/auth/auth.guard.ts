@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
+import { ConfigService } from '@nestjs/config'
 import { Request } from 'express'
 import { IS_PUBLIC_KEY } from 'src/common/decorators/auth.decorator'
 
@@ -14,9 +15,16 @@ export class AuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private reflector: Reflector,
+    private configService: ConfigService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest<Request>()
+
+    if (this.hasValidApiKey(request)) {
+      return true
+    }
+
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
@@ -24,7 +32,7 @@ export class AuthGuard implements CanActivate {
     if (isPublic) {
       return true
     }
-    const request = context.switchToHttp().getRequest<Request>()
+
     const token = this.extractTokenFromHeader(request)
     if (!token) {
       throw new UnauthorizedException()
@@ -39,6 +47,17 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException()
     }
     return true
+  }
+
+  private hasValidApiKey(request: Request): boolean {
+    const apiKeyHeader = request.headers['x-api-key']
+    const validApiKey = this.configService.get<string>('API_KEY')
+
+    if (!validApiKey || validApiKey.trim() === '') {
+      return false
+    }
+
+    return apiKeyHeader === validApiKey
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
