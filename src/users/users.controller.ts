@@ -10,7 +10,7 @@ import {
 import { UsersService } from './users.service'
 import { Prisma } from 'generated/prisma'
 import { genSalt, hash } from 'bcryptjs'
-import { Public } from 'src/decorators/auth.decorator'
+import { AuthPublic } from 'src/common/decorators/auth.decorator'
 import { Totp } from 'time2fa'
 import * as qrcode from 'qrcode'
 
@@ -18,7 +18,7 @@ import * as qrcode from 'qrcode'
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Public()
+  @AuthPublic()
   @Post()
   async create(@Body() createUserDto: Prisma.UserCreateInput) {
     const salt = await genSalt(10)
@@ -53,7 +53,7 @@ export class UsersController {
     return this.usersService.findOne(id)
   }
 
-  @Public()
+  @AuthPublic()
   @Get('email/:email')
   findByEmail(@Param('email') email: string) {
     return this.usersService.findByEmail(email)
@@ -64,7 +64,7 @@ export class UsersController {
     return this.usersService.findUserCompany(id)
   }
 
-  @Public()
+  @AuthPublic()
   @Patch(':id')
   update(
     @Param('id') id: string,

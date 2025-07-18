@@ -19,7 +19,7 @@ import { Response } from 'express'
 import { Readable } from 'stream'
 import { UploadService } from './upload.service'
 import { UploadFileDto, FileResponseDto } from './dto/upload-file.dto'
-import { Public } from 'src/decorators/auth.decorator'
+import { AuthPublic } from 'src/common/decorators/auth.decorator'
 
 interface FileStreamResponse {
   stream: Readable
@@ -174,7 +174,7 @@ export class UploadController {
     stream.pipe(res)
   }
 
-  @Public()
+  @AuthPublic()
   @Get('view/:id')
   async viewFile(@Param('id') id: string, @Res() res: Response): Promise<void> {
     const result = await this.uploadService.getFileStream(id)
