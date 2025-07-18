@@ -19,9 +19,5 @@ export class AppController {
     return { status: 'ok' }
   }
 
-  @AuthPublic()
-  @Get('protected')
-  getProtected() {
-    return { message: 'This route is publicly accessible' }
-  }
+// Removed the `getProtected` method and its associated route.
 }

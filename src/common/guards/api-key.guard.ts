@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { ConfigService } from '@nestjs/config'
-import { IS_PUBLIC_KEY } from '../decorators/api-key.decorator'
+import { API_KEY_PUBLIC_KEY } from '../decorators/api-key.decorator'
 import { Request } from 'express'
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
