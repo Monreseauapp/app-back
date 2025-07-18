@@ -21,6 +21,7 @@ export class ApiKeyGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     )
 
+
     if (isPublic) return true
 
     const request: Request = context.switchToHttp().getRequest<Request>()
