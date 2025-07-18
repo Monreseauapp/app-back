@@ -17,6 +17,7 @@ export class ApiKeyGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_API_KEY_PUBLIC, [
+
       context.getHandler(),
       context.getClass(),
     ])
