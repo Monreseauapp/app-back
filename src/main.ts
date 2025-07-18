@@ -2,13 +2,6 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
-  // Validate required environment variables
-  if (!process.env.API_KEY || process.env.API_KEY.trim() === '') {
-    console.error('❌ ERROR: API_KEY environment variable is required but not set')
-    console.log('Please set API_KEY in your environment variables or .env file')
-    process.exit(1)
-  }
-
   const app = await NestFactory.create(AppModule)
 
   app.enableCors({
@@ -36,7 +29,6 @@ async function bootstrap() {
 
   await app.listen(port, host)
   console.log(`🚀 Application is running on: http://${host}:${port}`)
-  console.log(`🔑 API Key protection is enabled`)
 }
 
 void bootstrap()
