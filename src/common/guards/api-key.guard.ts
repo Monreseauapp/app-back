@@ -36,7 +36,6 @@ export class ApiKeyGuard implements CanActivate {
       throw new UnauthorizedException('Invalid or missing API key')
     }
 
-    console.log(validApiKey, apiKeyHeader)
     return true
   }
 }
