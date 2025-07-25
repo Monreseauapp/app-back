@@ -29,6 +29,12 @@ export class CompanyService {
     })
   }
 
+  findByEmail(email: string) {
+    return this.databaseService.company.findUnique({
+      where: { email },
+    })
+  }
+
   update(id: string, updateCompanyDto: Prisma.CompanyUpdateInput) {
     return this.databaseService.company.update({
       where: { id },

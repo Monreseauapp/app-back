@@ -22,6 +22,12 @@ export class SubscriptionService {
     })
   }
 
+  findByCompany(companyId: string) {
+    return this.databaseService.subscription.findUnique({
+      where: { companyId },
+    })
+  }
+
   update(id: string, updateSubscriptionDto: Prisma.SubscriptionUpdateInput) {
     return this.databaseService.subscription.update({
       where: { id },
