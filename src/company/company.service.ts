@@ -54,6 +54,13 @@ export class CompanyService {
     return paymentMethods.data
   }
 
+  findCustomerId(id: string) {
+    return this.databaseService.company.findUnique({
+      where: { id },
+      select: { stripeCustomerId: true },
+    })
+  }
+
   update(id: string, updateCompanyDto: Prisma.CompanyUpdateInput) {
     return this.databaseService.company.update({
       where: { id },
