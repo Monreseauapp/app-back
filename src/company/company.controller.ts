@@ -46,9 +46,9 @@ export class CompanyController {
     return this.companyService.findCompanyPaymentMethods(id)
   }
 
-  @Get(':id/customer-id')
+  @Get(':id/customer')
   findCustomerId(@Param('id') id: string) {
-    return this.companyService.findCustomerId(id)
+    return this.companyService.findCustomerByUserId(id)
   }
 
   @Patch(':id')

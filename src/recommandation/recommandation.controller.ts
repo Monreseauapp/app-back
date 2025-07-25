@@ -54,6 +54,11 @@ export class RecommandationController {
     return this.recommandationService.findAllByCompanyRecipients(companyId)
   }
 
+  @Get('user/:userId')
+  findAllByUserId(@Param('userId') userId: string) {
+    return this.recommandationService.findAllRecommandationsByUserId(userId)
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

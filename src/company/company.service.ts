@@ -54,11 +54,15 @@ export class CompanyService {
     return paymentMethods.data
   }
 
-  findCustomerId(id: string) {
-    return this.databaseService.company.findUnique({
+  async findCustomerByUserId(id: string) {
+    const company = await this.databaseService.company.findUnique({
       where: { id },
       select: { stripeCustomerId: true },
     })
+    if (!company?.stripeCustomerId) {
+      return null
+    }
+    return this.stripeService.retrieveCustomer(company.stripeCustomerId)
   }
 
   update(id: string, updateCompanyDto: Prisma.CompanyUpdateInput) {
