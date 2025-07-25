@@ -47,10 +47,10 @@ export class StripeController {
     }
   }
 
-  @Get('setup-intent/:customerId')
+  @Post('setup-intent')
   async setupIntent(
     @Req() req: any,
-    @Param('customerId') customerId: string,
+    @Body('customerId') customerId: string,
     @Res() res: Response,
   ) {
     if (!customerId) {
@@ -60,7 +60,7 @@ export class StripeController {
     }
     try {
       const setupIntent = await this.stripeService.setupIntent(customerId)
-      return res.status(HttpStatus.OK).json(setupIntent)
+      return res.status(HttpStatus.OK).json(setupIntent.client_secret)
     } catch (error) {
       console.error('Error creating setup intent:', error)
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
