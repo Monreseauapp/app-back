@@ -41,6 +41,11 @@ export class CompanyController {
     return this.companyService.findByEmail(email)
   }
 
+  @Get(':id/payment-methods')
+  findCompanyPaymentMethods(@Param('id') id: string) {
+    return this.companyService.findCompanyPaymentMethods(id)
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

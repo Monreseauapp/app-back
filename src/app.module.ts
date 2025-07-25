@@ -41,6 +41,7 @@ import { StripeModule } from './stripe/stripe.module'
     UsersModule,
     UploadModule,
     AuthModule,
+    StripeModule,
   ],
   controllers: [AppController],
   providers: [

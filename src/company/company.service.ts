@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'src/database/database.service'
 import { Prisma } from 'generated/prisma'
+import { StripeService } from 'src/stripe/stripe.service'
 
 @Injectable()
 export class CompanyService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(
+    private readonly databaseService: DatabaseService,
+    private readonly stripeService: StripeService, 
+  ) {}
 
   create(createCompanyDto: Prisma.CompanyCreateInput) {
     return this.databaseService.company.create({
@@ -33,6 +37,21 @@ export class CompanyService {
     return this.databaseService.company.findUnique({
       where: { email },
     })
+  }
+
+  async findCompanyPaymentMethods(id: string) {
+    const company = await this.databaseService.company.findUnique({
+      where: { id },
+      select: { stripeCustomerId: true },
+    })
+    if (!company?.stripeCustomerId) {
+      return []
+    }
+    const paymentMethods = await this.stripeService.retrievePaymentMethod(company.stripeCustomerId)
+    if (!paymentMethods) {
+      return []
+    }
+    return paymentMethods.data
   }
 
   update(id: string, updateCompanyDto: Prisma.CompanyUpdateInput) {
