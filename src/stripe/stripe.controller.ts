@@ -47,6 +47,28 @@ export class StripeController {
     }
   }
 
+  @Get('setup-intent/:customerId')
+  async setupIntent(
+    @Req() req: any,
+    @Param('customerId') customerId: string,
+    @Res() res: Response,
+  ) {
+    if (!customerId) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        error: 'Customer ID parameter is required',
+      })
+    }
+    try {
+      const setupIntent = await this.stripeService.setupIntent(customerId)
+      return res.status(HttpStatus.OK).json(setupIntent)
+    } catch (error) {
+      console.error('Error creating setup intent:', error)
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        error: 'Failed to create setup intent',
+      })
+    }
+  }
+
   @Get('subscription/customer/:customerId')
   async findSubscriptionByCustomerId(
     @Req() req: any,

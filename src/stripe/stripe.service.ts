@@ -21,6 +21,10 @@ export class StripeService {
     return this.stripe.customers.retrieve(customerId)
   }
 
+  async setupIntent(customerId: string) {
+    return this.stripe.setupIntents.create({ customer: customerId })
+  }
+
   async findCustomerByEmail(email: string) {
     const customers = await this.stripe.customers.list({ email })
     return customers.data.length > 0 ? customers.data[0] : null
