@@ -36,6 +36,11 @@ export class CompanyController {
     return this.companyService.findAllUsers(id)
   }
 
+  @Get('email/:email')
+  findByEmail(@Param('email') email: string) {
+    return this.companyService.findByEmail(email)
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
