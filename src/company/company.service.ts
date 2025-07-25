@@ -7,7 +7,7 @@ import { StripeService } from 'src/stripe/stripe.service'
 export class CompanyService {
   constructor(
     private readonly databaseService: DatabaseService,
-    private readonly stripeService: StripeService, 
+    private readonly stripeService: StripeService,
   ) {}
 
   create(createCompanyDto: Prisma.CompanyCreateInput) {
@@ -47,7 +47,9 @@ export class CompanyService {
     if (!company?.stripeCustomerId) {
       return []
     }
-    const paymentMethods = await this.stripeService.retrievePaymentMethod(company.stripeCustomerId)
+    const paymentMethods = await this.stripeService.retrievePaymentMethod(
+      company.stripeCustomerId,
+    )
     if (!paymentMethods) {
       return []
     }
