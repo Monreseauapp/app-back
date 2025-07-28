@@ -19,6 +19,7 @@ import { UsersModule } from './users/users.module'
 import { UploadModule } from './upload/upload.module'
 import { AuthModule } from './auth/auth.module'
 import { ApiKeyGuard } from './common/guards/api-key.guard'
+import { EmailModule } from './email/email.module'
 import { StripeModule } from './stripe/stripe.module'
 
 @Module({
@@ -41,6 +42,7 @@ import { StripeModule } from './stripe/stripe.module'
     UsersModule,
     UploadModule,
     AuthModule,
+    EmailModule,
     StripeModule,
   ],
   controllers: [AppController],
