@@ -36,6 +36,21 @@ export class CompanyController {
     return this.companyService.findAllUsers(id)
   }
 
+  @Get('email/:email')
+  findByEmail(@Param('email') email: string) {
+    return this.companyService.findByEmail(email)
+  }
+
+  @Get(':id/payment-methods')
+  findCompanyPaymentMethods(@Param('id') id: string) {
+    return this.companyService.findCompanyPaymentMethods(id)
+  }
+
+  @Get(':id/customer')
+  findCustomerId(@Param('id') id: string) {
+    return this.companyService.findCustomerByUserId(id)
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
