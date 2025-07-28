@@ -13,6 +13,7 @@ import {
   Delete,
 } from '@nestjs/common'
 import { Response } from 'express'
+import he from 'he'
 import Stripe from 'stripe'
 import { StripeService } from './stripe.service'
 
@@ -307,7 +308,8 @@ export class StripeController {
         'Stripe webhook signature verification failed:',
         err.message,
       )
-      return res.status(400).send(`Webhook Error: ${err.message}`)
+      const sanitizedMessage = he.encode(err.message || 'Unknown error');
+      return res.status(400).send(`Webhook Error: ${sanitizedMessage}`)
     }
 
     // Handle the event
