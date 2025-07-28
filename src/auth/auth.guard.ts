@@ -50,20 +50,20 @@ export class AuthGuard implements CanActivate {
   }
 
   private hasValidApiKey(request: Request): boolean {
-    const apiKeyHeader = request.headers['x-api-key'];
-    const validApiKey = this.configService.get<string>('API_KEY');
+    const apiKeyHeader = request.headers['x-api-key']
+    const validApiKey = this.configService.get<string>('API_KEY')
 
     if (!validApiKey || validApiKey.trim() === '') {
-      return false;
+      return false
     }
 
     if (typeof apiKeyHeader === 'string') {
-      return apiKeyHeader === validApiKey;
+      return apiKeyHeader === validApiKey
     } else if (Array.isArray(apiKeyHeader)) {
-      return apiKeyHeader.includes(validApiKey);
+      return apiKeyHeader.includes(validApiKey)
     }
 
-    return false;
+    return false
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {

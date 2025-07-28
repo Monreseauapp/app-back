@@ -35,7 +35,6 @@ export class ApiKeyGuard implements CanActivate {
     if (!apiKeyHeader || apiKeyHeader !== validApiKey) {
       throw new UnauthorizedException('Invalid or missing API key')
     }
-
     return true
   }
 }

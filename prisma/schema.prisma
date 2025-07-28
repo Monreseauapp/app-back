@@ -82,44 +82,44 @@ enum TransactionState {
 
 // TABLES
 model User {
-  id                       String            @id @default(cuid())
-  linkedin                 String?           @db.VarChar(255)
-  website                  String?           @db.VarChar(255)
-  youtube                  String?           @db.VarChar(255)
-  instagram                String?           @db.VarChar(255)
-  lastName                 String            @db.VarChar(50)
-  firstName                String            @db.VarChar(50)
-  email                    String            @unique @db.VarChar(255)
-  photoUrl                 String?           @db.VarChar(255)
-  jobTitle                 String?           @db.VarChar(50)
-  address                  String?            @db.VarChar(255)
-  addressComplement        String?           @db.VarChar(255)
-  postalCode               Int?
-  city                     String            @db.VarChar(50)
-  country                  String?            @db.VarChar(50)
-  createdAt                DateTime          @default(now())
-  updatedAt                DateTime          @updatedAt
-  lastLogin                DateTime?
-  phone                    String            @unique @db.VarChar(12)
-  password                 String            @db.VarChar(255)
-  domainId                 String?
-  companyId                String?
-  isAdmin                  Boolean           @default(false)
-  twoFaSecret            String?           @db.VarChar(255)
-  retentionDate            DateTime?        @default(dbgenerated("(now() + interval '3 years')"))
-  consentTerms            Boolean           @default(false)
-  consentMarketing        Boolean           @default(false)
-  allowRecommendationDataAccess Boolean @default(false)
-  jobDomain                JobDomain?         @relation(fields: [domainId], references: [id])
-  company                  Company?          @relation(fields: [companyId], references: [id])
-  recommendationsInitiated Recommandation[] @relation("RecoInitiateur")
-  recommendationsReceived  Recommandation[] @relation("RecoDestinataire")
-  projects                 Project[]
-  payments                 PaymentMethod[]
-  reviews                  Review[]
-  RGPD                       RGPD[]
-  projectsAsMember           Project[] @relation("ProjectUsers")
-  files                      File[]
+  id                            String           @id @default(cuid())
+  linkedin                      String?          @db.VarChar(255)
+  website                       String?          @db.VarChar(255)
+  youtube                       String?          @db.VarChar(255)
+  instagram                     String?          @db.VarChar(255)
+  lastName                      String           @db.VarChar(50)
+  firstName                     String           @db.VarChar(50)
+  email                         String           @unique @db.VarChar(255)
+  photoUrl                      String?          @db.VarChar(255)
+  jobTitle                      String?          @db.VarChar(50)
+  address                       String?          @db.VarChar(255)
+  addressComplement             String?          @db.VarChar(255)
+  postalCode                    Int?
+  city                          String           @db.VarChar(50)
+  country                       String?          @db.VarChar(50)
+  createdAt                     DateTime         @default(now())
+  updatedAt                     DateTime         @updatedAt
+  lastLogin                     DateTime?
+  phone                         String           @unique @db.VarChar(12)
+  password                      String           @db.VarChar(255)
+  domainId                      String?
+  companyId                     String?
+  isAdmin                       Boolean          @default(false)
+  twoFaSecret                   String?          @db.VarChar(255)
+  retentionDate                 DateTime?        @default(dbgenerated("(now() + interval '3 years')"))
+  consentTerms                  Boolean          @default(false)
+  consentMarketing              Boolean          @default(false)
+  allowRecommendationDataAccess Boolean          @default(false)
+  jobDomain                     JobDomain?       @relation(fields: [domainId], references: [id])
+  company                       Company?         @relation(fields: [companyId], references: [id])
+  recommendationsInitiated      Recommandation[] @relation("RecoInitiateur")
+  recommendationsReceived       Recommandation[] @relation("RecoDestinataire")
+  projects                      Project[]
+  payments                      PaymentMethod[]
+  reviews                       Review[]
+  RGPD                          RGPD[]
+  projectsAsMember              Project[]        @relation("ProjectUsers")
+  files                         File[]
 }
 
 model JobDomain {
@@ -131,28 +131,28 @@ model JobDomain {
 }
 
 model Company {
-  id                 String              @id @default(cuid())
-  name               String              @unique @db.VarChar(50)
-  address            String?              @db.VarChar(255)
-  addressComplement String?             @db.VarChar(255)
+  id                 String           @id @default(cuid())
+  name               String           @unique @db.VarChar(50)
+  address            String?          @db.VarChar(255)
+  addressComplement  String?          @db.VarChar(255)
   postalCode         Int?
-
-  city               String              @db.VarChar(50)
-  country            String?             @db.VarChar(50)
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  recommendationRate String?             @db.VarChar(50)
-  email              String              @unique @db.VarChar(50)
-  phone              String              @unique @db.VarChar(12)
-  website            String?             @db.VarChar(255)
-  photoUrl           String?             @db.VarChar(255)
-  description        String?             @db.VarChar(255)
-  linkedin           String?             @db.VarChar(255)
-  subscriptionId     String?              @unique
-  ownerId            String              @unique
-  retentionDate     DateTime
-  OpentoReco       Boolean            @default(true)
-  Subscription       Subscription?        @relation("CompanySubscription", fields: [subscriptionId], references: [id])
+  stripeCustomerId   String?          @unique @db.VarChar(255)
+  city               String           @db.VarChar(50)
+  country            String?          @db.VarChar(50)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  recommendationRate String?          @db.VarChar(50)
+  email              String           @unique @db.VarChar(50)
+  phone              String           @unique @db.VarChar(12)
+  website            String?          @db.VarChar(255)
+  photoUrl           String?          @db.VarChar(255)
+  description        String?          @db.VarChar(255)
+  linkedin           String?          @db.VarChar(255)
+  subscriptionId     String?          @unique
+  ownerId            String           @unique
+  retentionDate      DateTime
+  OpentoReco         Boolean          @default(true)
+  Subscription       Subscription?    @relation("CompanySubscription", fields: [subscriptionId], references: [id])
   users              User[]
   recommendations    Recommandation[]
   enterpriseProjects CompanyProject[]
@@ -161,123 +161,124 @@ model Company {
 
 model Subscription {
   id            String            @id @default(cuid())
-  startDate     DateTime
+  stripeId      String?           @unique @db.VarChar(255)
+  startDate     DateTime?
   duration      Int
   type          SubscriptionType
   state         SubscriptionState
-  endDate       DateTime
+  endDate       DateTime?
   cancelledDate DateTime?
   retentionDate DateTime?
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   companyId     String?           @unique
 
-  Company       Company?          @relation("CompanySubscription")
-  transactions  Transaction[]
-  invoices      Invoice[]
+  Company      Company?      @relation("CompanySubscription")
+  transactions Transaction[]
+  invoices     Invoice[]
 }
 
 model Recommandation {
-  id           String    @id @default(cuid())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  priority     Int       @default(0)
-  firstName    String?    @db.VarChar(50)
-  lastName     String?    @db.VarChar(50)
-  email        String?    @db.VarChar(255)
-  phone        String?    @db.VarChar(12)
-  address      String?    @db.VarChar(255)
-  addressComplement String? @db.VarChar(255)
-  postalCode   Int?
-  city         String?    @db.VarChar(50)
-  country      String?    @db.VarChar(50)
-  companyName  String?   @db.VarChar(50)
-  companyAddress String? @db.VarChar(255)
-  companyAddressComplement String? @db.VarChar(255)
-  companyPostalCode Int?
-  companyCity  String?   @db.VarChar(50)
-  companyCountry String? @db.VarChar(50)
-  companyEmail String? @db.VarChar(255)
-  companyPhone String? @db.VarChar(12)
-  companyJobDomain String? @db.VarChar(50)
-  description  String?   @db.VarChar(255)
-  startDate    DateTime?
-  inProgressAt DateTime?
-  endDate      DateTime?
-  isAccepted   Boolean   @default(false)
-  RecoStateRecipient    RecoState @default(PENDING)
-  rejectionReasonRecipient String? @db.VarChar(255)
-  RecoStateCompany      RecoState @default(PENDING)
-  rejectionReasonCompany String? @db.VarChar(255)
-  companyId    String
-  initiatorId  String
-  recipientId  String?
-  retentionDate DateTime?
-  initiator    User      @relation("RecoInitiateur", fields: [initiatorId], references: [id])
-  recipient    User?     @relation("RecoDestinataire", fields: [recipientId], references: [id])
-  company      Company?  @relation(fields: [companyId], references: [id])
+  id                       String    @id @default(cuid())
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+  priority                 Int       @default(0)
+  firstName                String?   @db.VarChar(50)
+  lastName                 String?   @db.VarChar(50)
+  email                    String?   @db.VarChar(255)
+  phone                    String?   @db.VarChar(12)
+  address                  String?   @db.VarChar(255)
+  addressComplement        String?   @db.VarChar(255)
+  postalCode               Int?
+  city                     String?   @db.VarChar(50)
+  country                  String?   @db.VarChar(50)
+  companyName              String?   @db.VarChar(50)
+  companyAddress           String?   @db.VarChar(255)
+  companyAddressComplement String?   @db.VarChar(255)
+  companyPostalCode        Int?
+  companyCity              String?   @db.VarChar(50)
+  companyCountry           String?   @db.VarChar(50)
+  companyEmail             String?   @db.VarChar(255)
+  companyPhone             String?   @db.VarChar(12)
+  companyJobDomain         String?   @db.VarChar(50)
+  description              String?   @db.VarChar(255)
+  startDate                DateTime?
+  inProgressAt             DateTime?
+  endDate                  DateTime?
+  isAccepted               Boolean   @default(false)
+  RecoStateRecipient       RecoState @default(PENDING)
+  rejectionReasonRecipient String?   @db.VarChar(255)
+  RecoStateCompany         RecoState @default(PENDING)
+  rejectionReasonCompany   String?   @db.VarChar(255)
+  companyId                String
+  initiatorId              String
+  recipientId              String?
+  retentionDate            DateTime?
+  initiator                User      @relation("RecoInitiateur", fields: [initiatorId], references: [id])
+  recipient                User?     @relation("RecoDestinataire", fields: [recipientId], references: [id])
+  company                  Company?  @relation(fields: [companyId], references: [id])
 }
 
 model Project {
-  id             String           @id @default(cuid())
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  name           String           @db.VarChar(50)
-  description    String?          @db.VarChar(255)
-  startDate      DateTime?
-  endDate        DateTime?
-  priority       Int              @default(0)
-  isPublic       Boolean          @default(false)
-  companyNumber  Int?
-  companyId      String?
-  companyName    String?          @db.VarChar(50)
-  companyAddress String?          @db.VarChar(255)
-  companyAddressComplement String? @db.VarChar(255)
-  companyPostalCode Int?
-  companyCity    String?          @db.VarChar(50)
-  companyCountry String?          @db.VarChar(50)
-  companyEmail   String?          @db.VarChar(255)
-  companyPhone   String?          @db.VarChar(12)
-  companyJobDomain String?        @db.VarChar(50)
-  ProjectState    ProjectState    @default(PENDING)
-  ProjectChoiceCompany     ProjectChoiceState       @default(PENDING)
-  rejectionReasonCompany  String? @db.VarChar(255)
-  userId         String
-  retentionDate  DateTime?
-  user           User             @relation(fields: [userId], references: [id])
-  companyProject CompanyProject[]
-  users          User[]           @relation("ProjectUsers")
-  reviews        Review[]
+  id                       String             @id @default(cuid())
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
+  name                     String             @db.VarChar(50)
+  description              String?            @db.VarChar(255)
+  startDate                DateTime?
+  endDate                  DateTime?
+  priority                 Int                @default(0)
+  isPublic                 Boolean            @default(false)
+  companyNumber            Int?
+  companyId                String?
+  companyName              String?            @db.VarChar(50)
+  companyAddress           String?            @db.VarChar(255)
+  companyAddressComplement String?            @db.VarChar(255)
+  companyPostalCode        Int?
+  companyCity              String?            @db.VarChar(50)
+  companyCountry           String?            @db.VarChar(50)
+  companyEmail             String?            @db.VarChar(255)
+  companyPhone             String?            @db.VarChar(12)
+  companyJobDomain         String?            @db.VarChar(50)
+  ProjectState             ProjectState       @default(PENDING)
+  ProjectChoiceCompany     ProjectChoiceState @default(PENDING)
+  rejectionReasonCompany   String?            @db.VarChar(255)
+  userId                   String
+  retentionDate            DateTime?
+  user                     User               @relation(fields: [userId], references: [id])
+  companyProject           CompanyProject[]
+  users                    User[]             @relation("ProjectUsers")
+  reviews                  Review[]
 }
 
 model CompanyProject {
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-  projectId          String
-  companyId          String
-  retentionDate     DateTime?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  projectId       String
+  companyId       String
+  retentionDate   DateTime?
   UserChoiceState ProjectChoiceState @default(PENDING)
-  rejectionReason    String?            @db.VarChar(255)
-  project            Project            @relation(fields: [projectId], references: [id])
-  company            Company            @relation(fields: [companyId], references: [id])
+  rejectionReason String?            @db.VarChar(255)
+  project         Project            @relation(fields: [projectId], references: [id])
+  company         Company            @relation(fields: [companyId], references: [id])
 
   @@id([projectId, companyId])
 }
 
 model Review {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  rating    Int      @default(0)
-  comment   String?  @db.VarChar(255)
-  userId    String
-  projectId String?
-  companyId String
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  rating        Int       @default(0)
+  comment       String?   @db.VarChar(255)
+  userId        String
+  projectId     String?
+  companyId     String
   retentionDate DateTime?
 
-  user    User    @relation(fields: [userId], references: [id])
+  user    User     @relation(fields: [userId], references: [id])
   project Project? @relation(fields: [projectId], references: [id])
-  company Company @relation(fields: [companyId], references: [id])
+  company Company  @relation(fields: [companyId], references: [id])
 
   @@unique([userId, projectId, companyId])
 }
@@ -293,7 +294,7 @@ model Transaction {
   State           TransactionState @default(PENDING)
   processingDate  DateTime?
   subscriptionId  String
-  retentionDate    DateTime?
+  retentionDate   DateTime?
   PaymentMethodId String?
   PaymentMethod   PaymentMethod?   @relation(fields: [PaymentMethodId], references: [id])
   Subscription    Subscription     @relation(fields: [subscriptionId], references: [id])
@@ -312,11 +313,11 @@ model PaymentMethod {
   cardHolderName  String?       @db.VarChar(50)
   expirationMonth Int?
   expirationYear  Int?
-  consentDate    DateTime?
-  consentType    ConsentType
-  consented      Boolean       @default(false)
+  consentDate     DateTime?
+  consentType     ConsentType
+  consented       Boolean       @default(false)
   details         String?       @db.VarChar(255)
-  processingDate DateTime?
+  processingDate  DateTime?
   userId          String
   retentionDate   DateTime?
   user            User          @relation(fields: [userId], references: [id])
@@ -324,43 +325,43 @@ model PaymentMethod {
 }
 
 model Invoice {
-  id            String          @id @default(cuid())
-  name         String          @db.VarChar(50)
-  address       String          @db.VarChar(255)
-  addressComplement String?    @db.VarChar(255)
-  postalCode    Int
-  city          String          @db.VarChar(50)
-  VATNumber     String?         @db.VarChar(50)
+  id                 String        @id @default(cuid())
+  name               String        @db.VarChar(50)
+  address            String        @db.VarChar(255)
+  addressComplement  String?       @db.VarChar(255)
+  postalCode         Int
+  city               String        @db.VarChar(50)
+  VATNumber          String?       @db.VarChar(50)
   billingPeriodStart DateTime
-  billingPeriodEnd DateTime
-  issuedAt      DateTime         @default(now())
-  dueAt       DateTime
-  paidAt       DateTime?
-  Status        InvoicesSatus   @default(DARFT)
-  retentionDate DateTime?
-  amount        Float
-  currency      String          @db.VarChar(3)
-  tax_ammount    Float?
-  subscriptionId String?
-  subscription  Subscription?   @relation(fields: [subscriptionId], references: [id])
-  type          InvoiceType     @default(PENDING)
-  transactions  Transaction[]
+  billingPeriodEnd   DateTime
+  issuedAt           DateTime      @default(now())
+  dueAt              DateTime
+  paidAt             DateTime?
+  Status             InvoicesSatus @default(DARFT)
+  retentionDate      DateTime?
+  amount             Float
+  currency           String        @db.VarChar(3)
+  tax_ammount        Float?
+  subscriptionId     String?
+  subscription       Subscription? @relation(fields: [subscriptionId], references: [id])
+  type               InvoiceType   @default(PENDING)
+  transactions       Transaction[]
 }
 
 model RGPD {
-  id            String      @id @default(cuid())
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  consentType   ConsentType
-  consented     Boolean     @default(false)
-  consentVersion String?    @db.VarChar(50)
-  consentDate   DateTime?
-  consentText  String?     @db.VarChar(255)
-  IP           String?     @db.VarChar(50)
-  UserAgent   String?     @db.VarChar(255)
-  userId        String
-  retentionDate DateTime?
-  user          User        @relation(fields: [userId], references: [id])
+  id             String      @id @default(cuid())
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  consentType    ConsentType
+  consented      Boolean     @default(false)
+  consentVersion String?     @db.VarChar(50)
+  consentDate    DateTime?
+  consentText    String?     @db.VarChar(255)
+  IP             String?     @db.VarChar(50)
+  UserAgent      String?     @db.VarChar(255)
+  userId         String
+  retentionDate  DateTime?
+  user           User        @relation(fields: [userId], references: [id])
 }
 
 model File {
@@ -375,12 +376,11 @@ model File {
   updatedAt    DateTime @updatedAt
   userId       String?
   user         User?    @relation(fields: [userId], references: [id])
-  
- 
-  category     String?  
-  description  String?  
-  isPublic     Boolean  @default(false)
+
+  category      String?
+  description   String?
+  isPublic      Boolean   @default(false)
   retentionDate DateTime?
-  
+
   @@map("files")
 }
