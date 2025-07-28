@@ -60,6 +60,17 @@ export class RecommandationService {
     })
   }
 
+  async findAllRecommandationsByUserId(userId: string) {
+    return this.databaseService.recommandation.findMany({
+      where: {
+        OR: [
+          { initiatorId: userId },
+          { recipientId: userId },
+        ],
+      },
+    })
+  }
+
   update(
     id: string,
     updateRecommandationDto: Prisma.RecommandationUpdateInput,
