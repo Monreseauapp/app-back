@@ -7,7 +7,6 @@ async function bootstrap() {
     console.error(
       '❌ ERROR: API_KEY environment variable is required but not set',
     )
-
     console.log('Please set API_KEY in your environment variables or .env file')
     process.exit(1)
   }
@@ -41,7 +40,6 @@ async function bootstrap() {
 
   await app.listen(port, host)
   console.log(`🚀 Application is running on: http://${host}:${port}`)
-  console.log(`🔑 API Key protection is enabled`)
 }
 
 void bootstrap()
