@@ -29,6 +29,11 @@ export class SubscriptionController {
     return this.subscriptionService.findOne(id)
   }
 
+  @Get('company/:companyId')
+  findByCompany(@Param('companyId') companyId: string) {
+    return this.subscriptionService.findByCompany(companyId)
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
