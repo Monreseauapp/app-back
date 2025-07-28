@@ -307,7 +307,7 @@ export class StripeController {
         'Stripe webhook signature verification failed:',
         err.message,
       )
-      return res.status(400).send(`Webhook Error: ${err.message}`)
+      return res.status(400).json({ error: 'Webhook signature verification failed' })
     }
 
     // Handle the event
