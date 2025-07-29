@@ -63,10 +63,7 @@ export class RecommandationService {
   async findAllRecommandationsByUserId(userId: string) {
     return this.databaseService.recommandation.findMany({
       where: {
-        OR: [
-          { initiatorId: userId },
-          { recipientId: userId },
-        ],
+        OR: [{ initiatorId: userId }, { recipientId: userId }],
       },
     })
   }

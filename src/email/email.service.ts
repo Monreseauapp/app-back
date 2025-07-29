@@ -31,8 +31,10 @@ export class EmailService {
 
   async sendWelcomeEmail(data: WelcomeEmailData): Promise<boolean> {
     try {
-      const appLink = this.configService.get<string>('FRONTEND_URL') || 'https://localhost:3000'
-      
+      const appLink =
+        this.configService.get<string>('FRONTEND_URL') ||
+        'https://localhost:3000'
+
       await this.mailerService.sendMail({
         to: data.email,
         subject: 'Bienvenue dans notre application !',

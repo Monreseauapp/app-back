@@ -308,7 +308,7 @@ export class StripeController {
         'Stripe webhook signature verification failed:',
         err.message,
       )
-      const sanitizedMessage = he.encode(err.message || 'Unknown error');
+      const sanitizedMessage = he.encode(err.message || 'Unknown error')
       return res.status(400).send(`Webhook Error: ${sanitizedMessage}`)
     }
 
