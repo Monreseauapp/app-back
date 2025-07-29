@@ -22,7 +22,9 @@ import { EmailController } from './email.controller'
           },
         },
         defaults: {
-          from: configService.get<string>('SMTP_FROM') || configService.get<string>('SMTP_USER'),
+          from:
+            configService.get<string>('SMTP_FROM') ||
+            configService.get<string>('SMTP_USER'),
         },
         template: {
           dir: join(__dirname, 'templates'),
