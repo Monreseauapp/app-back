@@ -74,39 +74,38 @@ export class RecommandationService {
       })
       const companyUserIds = companyUsers.map((u) => u.id)
 
-      const sentAndCompanyReco =
-        await this.databaseService.recommandation.findMany({
-          where: {
-            OR: [
-              { initiatorId: { in: companyUserIds } },
-              {
-                companyId: { equals: user.companyId },
-                recipientId: { notIn: companyUserIds },
-              },
-            ],
-          },
-          include: {
-            initiator: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                email: true,
-              },
+      const sent = await this.databaseService.recommandation.findMany({
+        where: {
+          OR: [
+            { initiatorId: { in: companyUserIds } },
+            {
+              companyId: { equals: user.companyId },
+              recipientId: { notIn: companyUserIds },
             },
-            recipient: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                email: true,
-              },
+          ],
+        },
+        include: {
+          initiator: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
             },
-            company: { select: { id: true, name: true, email: true } },
           },
-        })
+          recipient: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+            },
+          },
+          company: { select: { id: true, name: true, email: true } },
+        },
+      })
 
-      const receivedReco = await this.databaseService.recommandation.findMany({
+      const received = await this.databaseService.recommandation.findMany({
         where: {
           recipientId: { in: companyUserIds },
         },
@@ -122,8 +121,8 @@ export class RecommandationService {
       })
 
       return {
-        sentAndCompanyReco,
-        receivedReco,
+        sent,
+        received,
       }
     }
     if (!user?.companyId) {
