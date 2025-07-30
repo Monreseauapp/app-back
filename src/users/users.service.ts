@@ -15,7 +15,9 @@ export class UsersService {
   findAll(): Promise<
     Prisma.UserGetPayload<{ omit: { password: true } }>[] | null
   > {
-    return this.databaseService.user.findMany()
+    return this.databaseService.user.findMany({
+      omit: { password: true },
+    })
   }
 
   findOne(
