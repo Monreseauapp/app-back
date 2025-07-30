@@ -26,6 +26,7 @@ export class UsersService {
     return this.databaseService.user.findUnique({
       where: { id },
       omit: { password: true },
+      include: { company: true },
     })
   }
 
@@ -38,12 +39,11 @@ export class UsersService {
     })
   }
 
-  findUserCompany(
-    id: string,
-  ): Promise<Prisma.UserGetPayload<{ include: { company: true } }> | null> {
+  findByEmailWithPassword(
+    email: string,
+  ): Promise<Prisma.UserGetPayload<{}> | null> {
     return this.databaseService.user.findUnique({
-      where: { id },
-      include: { company: true },
+      where: { email },
     })
   }
 

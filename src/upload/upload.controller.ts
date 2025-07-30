@@ -21,7 +21,6 @@ import { UploadService } from './upload.service'
 import { UploadFileDto, FileResponseDto } from './dto/upload-file.dto'
 import { AuthPublic } from 'src/common/decorators/auth.decorator'
 
-
 interface FileStreamResponse {
   stream: Readable
   file: {
