@@ -102,7 +102,6 @@ model User {
   lastLogin                     DateTime?
   phone                         String           @unique @db.VarChar(12)
   password                      String           @db.VarChar(255)
-  domainId                      String?
   companyId                     String?
   isAdmin                       Boolean          @default(false)
   twoFaSecret                   String?          @db.VarChar(255)
@@ -110,7 +109,6 @@ model User {
   consentTerms                  Boolean          @default(false)
   consentMarketing              Boolean          @default(false)
   allowRecommendationDataAccess Boolean          @default(false)
-  jobDomain                     JobDomain?       @relation(fields: [domainId], references: [id])
   company                       Company?         @relation(fields: [companyId], references: [id])
   recommendationsInitiated      Recommandation[] @relation("RecoInitiateur")
   recommendationsReceived       Recommandation[] @relation("RecoDestinataire")
@@ -123,11 +121,11 @@ model User {
 }
 
 model JobDomain {
-  id        String   @id @default(cuid())
-  domaine   String   @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users     User[]
+  id        String    @id @default(cuid())
+  domaine   String    @db.VarChar(255)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  companies Company[]
 }
 
 model Company {
@@ -147,16 +145,21 @@ model Company {
   website            String?          @db.VarChar(255)
   photoUrl           String?          @db.VarChar(255)
   description        String?          @db.VarChar(255)
+  domainId           String?          @db.VarChar(255)
   linkedin           String?          @db.VarChar(255)
+  SIRET              String?          @db.VarChar(50)
+  SIREN              String?          @db.VarChar(50)
   subscriptionId     String?          @unique
   ownerId            String           @unique
   retentionDate      DateTime
   OpentoReco         Boolean          @default(true)
   Subscription       Subscription?    @relation("CompanySubscription", fields: [subscriptionId], references: [id])
+  jobDomain          JobDomain?       @relation(fields: [domainId], references: [id])
   users              User[]
   recommendations    Recommandation[]
   enterpriseProjects CompanyProject[]
   reviews            Review[]
+  companyProfile     CompanyProfile?
 }
 
 model Subscription {
@@ -383,4 +386,17 @@ model File {
   retentionDate DateTime?
 
   @@map("files")
+}
+
+model CompanyProfile {
+  id                  String   @id @default(cuid())
+  activityDescription String?  @db.VarChar(255)
+  targetClient        String?  @db.VarChar(255)
+  registrationReason  String?  @db.VarChar(255)
+  certifications      String?  @db.VarChar(255)
+  similarApplications String?  @db.VarChar(255)
+  companyId           String   @unique
+  company             Company  @relation(fields: [companyId], references: [id])
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
