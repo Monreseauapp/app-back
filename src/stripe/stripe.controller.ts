@@ -13,6 +13,7 @@ import {
   Delete,
 } from '@nestjs/common'
 import { Response } from 'express'
+import he from 'he'
 import Stripe from 'stripe'
 import { StripeService } from './stripe.service'
 
@@ -47,10 +48,11 @@ export class StripeController {
     }
   }
 
-  @Get('setup-intent/:customerId')
+
+  @Post('setup-intent')
   async setupIntent(
     @Req() req: any,
-    @Param('customerId') customerId: string,
+    @Body('customerId') customerId: string,
     @Res() res: Response,
   ) {
     if (!customerId) {
@@ -60,7 +62,7 @@ export class StripeController {
     }
     try {
       const setupIntent = await this.stripeService.setupIntent(customerId)
-      return res.status(HttpStatus.OK).json(setupIntent)
+      return res.status(HttpStatus.OK).json(setupIntent.client_secret)
     } catch (error) {
       console.error('Error creating setup intent:', error)
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
@@ -307,9 +309,8 @@ export class StripeController {
         'Stripe webhook signature verification failed:',
         err.message,
       )
-      return res
-        .status(400)
-        .json({ error: 'Webhook signature verification failed' })
+      const sanitizedMessage = he.encode(err.message || 'Unknown error')
+      return res.status(400).send(`Webhook Error: ${sanitizedMessage}`)
     }
 
     // Handle the event
