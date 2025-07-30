@@ -73,7 +73,6 @@ export class RecommandationService {
         select: { id: true },
       })
       const companyUserIds = companyUsers.map((u) => u.id)
-
       const sent = await this.databaseService.recommandation.findMany({
         where: {
           OR: [
