@@ -12,7 +12,7 @@ export class AuthService {
   ) {}
 
   async signIn(email: string, pass: string): Promise<{ authorized: boolean }> {
-    const user = await this.usersService.findByEmail(email)
+    const user = await this.usersService.findByEmailWithPassword(email)
     if (!user?.password) {
       throw new UnauthorizedException('Invalid credentials')
     }

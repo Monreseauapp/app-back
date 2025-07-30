@@ -11,7 +11,6 @@ import { CompanyService } from './company.service'
 import { Prisma } from 'generated/prisma'
 import { AuthPublic } from 'src/common/decorators/auth.decorator'
 
-
 @Controller('company')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
