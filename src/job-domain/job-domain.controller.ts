@@ -11,6 +11,7 @@ import { JobDomainService } from './job-domain.service'
 import { Prisma } from 'generated/prisma'
 import { AuthPublic } from 'src/common/decorators/auth.decorator'
 
+
 @Controller('job-domain')
 export class JobDomainController {
   constructor(private readonly jobDomainService: JobDomainService) {}

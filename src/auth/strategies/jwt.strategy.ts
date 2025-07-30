@@ -21,6 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         }
         return process.env.JWT_SECRET
       })(),
+
     }
     super(options)
   }
