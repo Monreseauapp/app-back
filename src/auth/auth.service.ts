@@ -44,7 +44,17 @@ export class AuthService {
   async doubleFactorAuth(
     email: string,
     passcode: string,
+    tempToken: string,
   ): Promise<{ access_token: string; expires_in: string }> {
+    try {
+      const tempPayload = await this.jwtService.verifyAsync(tempToken)
+      if (!tempPayload?.temp || tempPayload.email !== email) {
+        throw new UnauthorizedException('Invalid or expired temp token')
+      }
+    } catch {
+      throw new UnauthorizedException('Invalid or expired temp token')
+    }
+
     const user = await this.usersService.findByEmail(email)
     if (!user || !user.twoFaSecret) {
       throw new UnauthorizedException('Invalid credentials')
