@@ -30,6 +30,17 @@ export class AuthService {
     }
   }
 
+  async verifyTempToken(tempToken: string): Promise<{ authorized: boolean; email: string; id: string }> {
+    try {
+      const decoded = await this.jwtService.verifyAsync(tempToken, {
+        secret: process.env.JWT_SECRET,
+      })
+      return { authorized: true, email: decoded.email, id: decoded.id }
+    } catch (error) {
+      throw new UnauthorizedException('Invalid or expired token')
+    }
+  }
+
   async doubleFactorAuth(
     email: string,
     passcode: string,
@@ -59,6 +70,24 @@ export class AuthService {
     return {
       access_token: await this.jwtService.signAsync(payload),
       expires_in: process.env.JWT_EXPIRES_IN || '600',
+    }
+  }
+
+  async verifyAccessToken(accessToken: string): Promise<{ email: string; id: string, companyId?: string }> {
+    try {
+      const decoded = await this.jwtService.verifyAsync(accessToken, {
+        secret: process.env.JWT_SECRET,
+      })
+      const user = await this.usersService.findByEmail(decoded.email)
+      if (!user) {
+        throw new UnauthorizedException('User not found')
+      }
+      if (user.companyId) {
+        decoded.companyId = user.companyId
+      }
+      return { email: decoded.email, id: decoded.id, companyId: decoded.companyId }
+    } catch (error) {
+      throw new UnauthorizedException('Invalid or expired token')
     }
   }
 }
