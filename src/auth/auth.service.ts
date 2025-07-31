@@ -22,7 +22,7 @@ export class AuthService {
     }
     const tempToken = await this.jwtService.signAsync(
       { email: user.email, id: user.id, temp: true },
-      { expiresIn: '5m' }
+      { expiresIn: 300 }
     )
     return {
       temp_token: tempToken,
