@@ -66,7 +66,7 @@ export class AuthService {
     if (!isValid) {
       throw new UnauthorizedException('Invalid 2FA token')
     }
-    const payload = { email: user.email, id: user.id }
+    const payload = { email: user.email, id: user.id, companyId: user.companyId }
     return {
       access_token: await this.jwtService.signAsync(payload),
       expires_in: process.env.JWT_EXPIRES_IN || '600',
