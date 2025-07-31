@@ -11,25 +11,39 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(email: string, pass: string): Promise<{ authorized: boolean }> {
+  async signIn(email: string, pass: string): Promise<{ temp_token: string; expires_in: string }> {
     const user = await this.usersService.findByEmailWithPassword(email)
     if (!user?.password) {
       throw new UnauthorizedException('Invalid credentials')
     }
-    return compare(pass, user?.password).then((isMatch) => {
-      if (!isMatch) {
-        throw new UnauthorizedException('Invalid credentials')
-      }
-      return {
-        authorized: true,
-      }
-    })
+    const isMatch = await compare(pass, user.password)
+    if (!isMatch) {
+      throw new UnauthorizedException('Invalid credentials')
+    }
+    const tempToken = await this.jwtService.signAsync(
+      { email: user.email, id: user.id, temp: true },
+      { expiresIn: '5m' }
+    )
+    return {
+      temp_token: tempToken,
+      expires_in: '300',
+    }
   }
 
   async doubleFactorAuth(
     email: string,
     passcode: string,
+    tempToken: string,
   ): Promise<{ access_token: string; expires_in: string }> {
+    try {
+      const tempPayload = await this.jwtService.verifyAsync(tempToken)
+      if (!tempPayload?.temp || tempPayload.email !== email) {
+        throw new UnauthorizedException('Invalid or expired temp token')
+      }
+    } catch {
+      throw new UnauthorizedException('Invalid or expired temp token')
+    }
+
     const user = await this.usersService.findByEmail(email)
     if (!user || !user.twoFaSecret) {
       throw new UnauthorizedException('Invalid credentials')

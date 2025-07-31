@@ -14,6 +14,6 @@ export class AuthController {
   @AuthPublic()
   @Post('2fa')
   doubleFactorAuth(@Body() twoFaDto: Record<string, string>) {
-    return this.authService.doubleFactorAuth(twoFaDto.email, twoFaDto.passcode)
+    return this.authService.doubleFactorAuth(twoFaDto.email, twoFaDto.passcode, twoFaDto.temp_token)
   }
 }
