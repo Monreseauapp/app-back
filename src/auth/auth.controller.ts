@@ -12,8 +12,20 @@ export class AuthController {
   }
 
   @AuthPublic()
+  @Post('verify-temp-token')
+  verifyTempToken(@Body() verifyTokenDto: Record<string, string>) {
+    return this.authService.verifyTempToken(verifyTokenDto.token)
+  }
+
+  @AuthPublic()
+  @Post('verify-token')
+  verifyAccessToken(@Body() verifyTokenDto: Record<string, string>) {
+    return this.authService.verifyAccessToken(verifyTokenDto.token)
+  }
+
+  @AuthPublic()
   @Post('2fa')
   doubleFactorAuth(@Body() twoFaDto: Record<string, string>) {
-    return this.authService.doubleFactorAuth(twoFaDto.email, twoFaDto.passcode, twoFaDto.temp_token)
+    return this.authService.doubleFactorAuth(twoFaDto.email, twoFaDto.passcode)
   }
 }
