@@ -44,7 +44,7 @@ export class AuthService {
   async doubleFactorAuth(
     email: string,
     passcode: string,
-    tempToken: string,
+    tempToken: string
   ): Promise<{ access_token: string; expires_in: string }> {
     try {
       const tempPayload = await this.jwtService.verifyAsync(tempToken)
