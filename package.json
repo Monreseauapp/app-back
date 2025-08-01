@@ -4,7 +4,7 @@
   "description": "",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build && cp -r src/email dist/",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -25,7 +25,8 @@
     "predev": "prisma generate && prisma migrate deploy"
   },
   "dependencies": {
-    "@nestjs-modules/mailer": "^2.0.2",
+    "@css-inline/css-inline": "^0.14.3",
+    "@nestjs-modules/mailer": "git+https://github.com/524H0003/nestjs-mailer",
     "@nestjs/common": "^11.1.3",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.3",
@@ -38,8 +39,10 @@
     "bcryptjs": "^3.0.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
-    "glob": "^11.0.3",
+    "glob": "^11.0.1",
     "he": "^1.2.0",
+    "liquidjs": "^10.20.2",
+    "mjml": "^5.0.0-alpha.6",
     "multer": "^2.0.1",
     "nodemailer": "^7.0.5",
     "passport": "^0.7.0",
