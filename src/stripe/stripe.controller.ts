@@ -13,7 +13,6 @@ import {
   Delete,
 } from '@nestjs/common'
 import { Response } from 'express'
-import he from 'he'
 import Stripe from 'stripe'
 import { StripeService } from './stripe.service'
 
@@ -287,37 +286,43 @@ export class StripeController {
   @Post('webhook')
   @HttpCode(HttpStatus.OK)
   async handleWebhook(
-    @Req() req: any,
+    @Req() req: { rawBody?: Buffer; body?: unknown },
     @Headers('stripe-signature') sig: string,
     @Res() res: Response,
-  ) {
+  ): Promise<void> {
     const stripe = this.stripeService.getStripeInstance()
     let event: Stripe.Event
 
     try {
-      const buf = Buffer.isBuffer(req.rawBody)
-        ? req.rawBody
-        : Buffer.from(req.body)
+      const buf: Buffer =
+        req.rawBody instanceof Buffer
+          ? req.rawBody
+          : Buffer.from(
+              typeof req.body === 'string'
+                ? req.body
+                : JSON.stringify(req.body),
+            )
       event = stripe.webhooks.constructEvent(
         buf,
         sig,
-        process.env.STRIPE_WEBHOOK_SECRET || '',
+        process.env.STRIPE_WEBHOOK_SECRET ?? '',
       )
-    } catch (err) {
+    } catch (err: unknown) {
+      const errorMessage =
+        typeof err === 'object' && err !== null && 'message' in err
+          ? String((err as { message?: string }).message)
+          : 'Unknown error'
       console.error(
         'Stripe webhook signature verification failed:',
-        err.message,
+        errorMessage,
       )
-      const sanitizedMessage = he.encode(err.message || 'Unknown error')
-      return res.status(400).send(`Webhook Error: ${sanitizedMessage}`)
+      return
     }
 
-    // Handle the event
     switch (event.type) {
       case 'payment_intent.succeeded':
-        // handle payment success
+        await Promise.resolve()
         break
-      // handle other event types as needed
       default:
         console.log(`Unhandled event type ${event.type}`)
     }

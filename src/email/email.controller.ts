@@ -72,7 +72,7 @@ export class SendCustomEmailDto {
   @IsString()
   template: string
 
-  context?: any
+  context?: Record<string, unknown>
 }
 
 export class SendPlainTextEmailDto {
@@ -181,7 +181,7 @@ export class EmailController {
         to,
         subject,
         template,
-        context,
+        context as Record<string, unknown>,
       )
 
       if (!success) {
