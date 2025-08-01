@@ -34,7 +34,6 @@ export class EmailService {
       const appLink =
         this.configService.get<string>('FRONTEND_URL') ||
         'https://localhost:3000'
-
       await this.mailerService.sendMail({
         to: data.email,
         subject: 'Bienvenue dans notre application !',
