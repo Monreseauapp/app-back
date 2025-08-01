@@ -61,14 +61,95 @@ export class RecommandationService {
   }
 
   async findAllRecommandationsByUserId(userId: string) {
-    return this.databaseService.recommandation.findMany({
-      where: {
-        OR: [
-          { initiatorId: userId },
-          { recipientId: userId },
-        ],
+    const user = await this.databaseService.user.findUnique({
+      where: { id: userId },
+      select: {
+        companyId: true,
       },
     })
+    if (user?.companyId) {
+      const companyUsers = await this.databaseService.user.findMany({
+        where: { companyId: user.companyId },
+        select: { id: true },
+      })
+      const companyUserIds = companyUsers.map((u) => u.id)
+      const sent = await this.databaseService.recommandation.findMany({
+        where: {
+          OR: [
+            { initiatorId: { in: companyUserIds } },
+            {
+              companyId: { equals: user.companyId },
+              recipientId: { notIn: companyUserIds },
+            },
+          ],
+        },
+        include: {
+          initiator: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+            },
+          },
+          recipient: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+            },
+          },
+          company: { select: { id: true, name: true, email: true } },
+        },
+      })
+
+      const received = await this.databaseService.recommandation.findMany({
+        where: {
+          recipientId: { in: companyUserIds },
+        },
+        include: {
+          initiator: {
+            select: { id: true, firstName: true, lastName: true, email: true },
+          },
+          recipient: {
+            select: { id: true, firstName: true, lastName: true, email: true },
+          },
+          company: { select: { id: true, name: true, email: true } },
+        },
+      })
+
+      return {
+        sent,
+        received,
+      }
+    }
+    if (!user?.companyId) {
+      const sent = await this.databaseService.recommandation.findMany({
+        where: { initiatorId: userId },
+        include: {
+          initiator: true,
+          recipient: true,
+          company: true,
+        },
+      })
+      const received = await this.databaseService.recommandation.findMany({
+        where: { recipientId: userId },
+        include: {
+          initiator: {
+            select: { id: true, firstName: true, lastName: true, email: true },
+          },
+          recipient: {
+            select: { id: true, firstName: true, lastName: true, email: true },
+          },
+          company: { select: { id: true, name: true, email: true } },
+        },
+      })
+      return { sent, received }
+    }
+    if (!user) {
+      throw new Error('User not found')
+    }
   }
 
   update(

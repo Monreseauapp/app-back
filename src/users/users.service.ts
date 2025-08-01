@@ -12,28 +12,38 @@ export class UsersService {
     })
   }
 
-  findAll() {
-    return this.databaseService.user.findMany()
-  }
-
-  findOne(id: string) {
-    return this.databaseService.user.findUnique({
-      where: { id },
+  findAll(): Promise<
+    Prisma.UserGetPayload<{ omit: { password: true } }>[] | null
+  > {
+    return this.databaseService.user.findMany({
+      omit: { password: true },
     })
   }
 
-  findByEmail(email: string): Promise<Prisma.UserGetPayload<object> | null> {
+  findOne(
+    id: string,
+  ): Promise<Prisma.UserGetPayload<{ omit: { password: true } }> | null> {
+    return this.databaseService.user.findUnique({
+      where: { id },
+      omit: { password: true },
+      include: { company: true },
+    })
+  }
+
+  findByEmail(
+    email: string,
+  ): Promise<Prisma.UserGetPayload<{ omit: { password: true } }> | null> {
     return this.databaseService.user.findUnique({
       where: { email },
+      omit: { password: true },
     })
   }
 
-  findUserCompany(
-    id: string,
-  ): Promise<Prisma.UserGetPayload<{ include: { company: true } }> | null> {
+  findByEmailWithPassword(
+    email: string,
+  ): Promise<Prisma.UserGetPayload<{}> | null> {
     return this.databaseService.user.findUnique({
-      where: { id },
-      include: { company: true },
+      where: { email },
     })
   }
 

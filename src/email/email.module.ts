@@ -21,8 +21,9 @@ import { EmailController } from './email.controller'
             pass: configService.get<string>('SMTP_PASS'),
           },
         },
-        defaults: {
-          from: configService.get<string>('SMTP_FROM') || configService.get<string>('SMTP_USER'),
+          from:
+            configService.get<string>('SMTP_FROM') ||
+            configService.get<string>('SMTP_USER'),
         },
         template: {
           dir: join(__dirname, 'templates'),
