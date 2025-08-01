@@ -16,12 +16,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:8081',
-      'http://localhost:3000',
-      'http://192.168.1.87:3000',
-      'http://192.168.1.87:8081',
-      'http://ns3093511.ip-54-36-122.eu',
       'https://ns3093511.ip-54-36-122.eu',
-      'http://54.36.122.34',
       'https://54.36.122.34',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
