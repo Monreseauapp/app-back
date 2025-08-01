@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common'
 import { JobDomainService } from './job-domain.service'
 import { Prisma } from 'generated/prisma'
+import { AuthPublic } from 'src/common/decorators/auth.decorator'
 
 @Controller('job-domain')
 export class JobDomainController {
@@ -19,6 +20,7 @@ export class JobDomainController {
     return this.jobDomainService.create(createJobDomainDto)
   }
 
+  @AuthPublic()
   @Get()
   findAll() {
     return this.jobDomainService.findAll()

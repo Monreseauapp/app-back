@@ -34,4 +34,15 @@ jobs:
           script_stop: true
           script: |
             cd ${{ secrets.PATH_TO_APP }}
+            git stash
+            git stash
             git pull origin master
+            git stash pop || true
+            npm i
+            npx prisma migrate dev --name=build
+            npx prisma generate
+            npm run build
+            rm -rf /var/www/backend/*
+            cd ..
+            cp -R backend/* /var/www/backend/
+            pm2 restart 0
