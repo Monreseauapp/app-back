@@ -126,7 +126,7 @@ export class EmailService {
     to: string,
     subject: string,
     template: string,
-    context: any,
+    context: Record<string, unknown>,
   ): Promise<boolean> {
     try {
       await this.mailerService.sendMail({
