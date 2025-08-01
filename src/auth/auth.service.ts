@@ -55,7 +55,6 @@ export class AuthService {
     try {
       const tempPayload: { email: string; id: string; temp?: boolean } =
         await this.jwtService.verifyAsync(tempToken)
-
       if (!tempPayload?.temp || tempPayload.email !== email) {
         throw new UnauthorizedException('Invalid or expired temp token')
       }
