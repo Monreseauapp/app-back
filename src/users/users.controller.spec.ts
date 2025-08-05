@@ -99,7 +99,7 @@ describe('UsersController', () => {
         country: 'Testland',
         phone: '123-456-7890',
         password: 'securepassword',
-        rententionDate: new Date(),
+        retentionDate: new Date(),
       }
 
       mockUsersService.create.mockResolvedValue(mockUser)
