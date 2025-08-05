@@ -6,7 +6,13 @@ import { DatabaseService } from 'src/database/database.service'
 export class UsersService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  create(createUserDto: Prisma.UserCreateInput) {
+  async create(createUserDto: Prisma.UserCreateInput) {
+    const existingUser = await this.databaseService.user.findUnique({
+      where: { email: createUserDto.email as string },
+    })
+    if (existingUser) {
+      return { error: 'Adresse email déjà utilisée' }
+    }
     return this.databaseService.user.create({
       data: createUserDto,
     })

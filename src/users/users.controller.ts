@@ -35,11 +35,18 @@ export class UsersController {
         return undefined
       })
     const user = await this.usersService.create(createUserDto)
-    return {
-      message: 'User created successfully',
-      id: user.id,
-      qrCode,
-      secret: key.secret,
+    if ('id' in user) {
+      return {
+        message: 'User created successfully',
+        id: user.id,
+        qrCode,
+        secret: key.secret,
+      }
+    } else {
+      return {
+        message: 'Failed to create user',
+        error: (user as { error: string }).error,
+      }
     }
   }
 
