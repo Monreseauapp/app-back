@@ -11,7 +11,7 @@ export class UsersService {
       where: { email: createUserDto.email as string },
     })
     if (existingUser) {
-      throw new Error('Adresse email déjà utilisée')
+      return { error: 'Adresse email déjà utilisée' }
     }
     return this.databaseService.user.create({
       data: createUserDto,
