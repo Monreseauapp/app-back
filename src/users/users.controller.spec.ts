@@ -14,7 +14,7 @@ type CreateUserInput = {
   country?: string
   phone?: string
   password?: string
-  rententionDate?: Date
+  retentionDate?: Date
 }
 
 type UpdateUserInput = {
