@@ -14,7 +14,7 @@ type CreateUserInput = {
   country?: string
   phone?: string
   password?: string
-  rententionDate?: Date
+  retentionDate?: Date
 }
 
 type UpdateUserInput = {
@@ -99,7 +99,7 @@ describe('UsersController', () => {
         country: 'Testland',
         phone: '123-456-7890',
         password: 'securepassword',
-        rententionDate: new Date(),
+        retentionDate: new Date(),
       }
 
       mockUsersService.create.mockResolvedValue(mockUser)
