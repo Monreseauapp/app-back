@@ -7,11 +7,22 @@ export class UsersService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   async create(createUserDto: Prisma.UserCreateInput) {
-    const existingUser = await this.databaseService.user.findUnique({
-      where: { email: createUserDto.email as string },
-    })
-    if (existingUser) {
-      return { error: 'Adresse email déjà utilisée' }
+    if (createUserDto.email) {
+      const existingUserByEmail = await this.databaseService.user.findUnique({
+        where: { email: createUserDto.email as string },
+      })
+      if (existingUserByEmail) {
+        return { error: 'Adresse email déjà utilisée' }
+      }
+    }
+
+    if (createUserDto.phone) {
+      const existingUserByPhone = await this.databaseService.user.findUnique({
+        where: { phone: createUserDto.phone as string },
+      })
+      if (existingUserByPhone) {
+        return { error: 'Numéro de téléphone déjà utilisé' }
+      }
     }
     return this.databaseService.user.create({
       data: createUserDto,
