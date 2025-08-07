@@ -56,6 +56,7 @@ export class EmailService {
       return false
     }
   }
+
   async sendPasswordResetEmail(data: PasswordResetEmailData): Promise<boolean> {
     try {
       const resetUrl = `${this.configService.get('FRONTEND_URL')}/reset-password?token=${data.token}`
@@ -67,7 +68,7 @@ export class EmailService {
         context: {
           name: data.name,
           resetUrl: resetUrl,
-          expirationTime: '1 heure',
+          expirationTime: '15 minutes',
         },
       })
 
@@ -99,7 +100,6 @@ export class EmailService {
         },
       })
 
-      // Email de confirmation à l'expéditeur
       await this.mailerService.sendMail({
         to: data.from,
         subject: 'Confirmation de réception de votre message',

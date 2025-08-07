@@ -3,12 +3,13 @@ import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
 import { compare } from 'bcryptjs'
 import { Totp } from 'time2fa'
-
+import { EmailService } from '../email/email.service'
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private emailService: EmailService,
   ) {}
 
   async signIn(
@@ -107,5 +108,46 @@ export class AuthService {
     } catch {
       throw new UnauthorizedException('Invalid or expired token')
     }
+  }
+
+  async requestPasswordReset(email: string): Promise<void> {
+    const user = await this.usersService.findByEmail(email)
+    if (!user) {
+      return
+    }
+    const resetToken = await this.jwtService.signAsync(
+      { email: user.email, id: user.id, reset: true },
+      { expiresIn: 900 }, // 15 minutes
+    )
+    await this.emailService.sendPasswordResetEmail({
+      email: user.email,
+      name: `${user.firstName} ${user.lastName}`,
+      token: resetToken,
+    })
+  }
+
+  async resetPassword(token: string, newPassword: string, confirmPassword: string): Promise<void> {
+    let payload: { email: string; id: string; reset?: boolean }
+    try {
+      payload = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECRET,
+      })
+      if (!payload.reset) {
+        throw new UnauthorizedException('Invalid reset token')
+      }
+    } catch {
+      throw new UnauthorizedException('Invalid or expired reset token')
+    }
+
+    const user = await this.usersService.findByEmail(payload.email)
+    if (!user) {
+      throw new UnauthorizedException('User not found')
+    }
+
+    if (newPassword !== confirmPassword) {
+      throw new UnauthorizedException('Passwords do not match')
+    }
+
+    await this.usersService.updatePassword(user.id, newPassword)
   }
 }

@@ -60,6 +60,13 @@ export class UsersService {
     })
   }
 
+  async updatePassword(id: string, newPassword: string) {
+    return this.databaseService.user.update({
+      where: { id },
+      data: { password: newPassword },
+    })
+  }
+
   remove(id: string) {
     return this.databaseService.user.delete({
       where: { id },
