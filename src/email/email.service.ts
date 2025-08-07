@@ -68,7 +68,7 @@ export class EmailService {
         context: {
           name: data.name,
           resetUrl: resetUrl,
-          expirationTime: '15 minutes',
+          expirationTime: '15',
         },
       })
 
