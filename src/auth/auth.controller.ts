@@ -32,4 +32,19 @@ export class AuthController {
       twoFaDto.tempToken,
     )
   }
+
+  @AuthPublic()
+  @Post('request-password-reset')
+  requestPasswordReset(@Body() resetDto: Record<string, string>) {
+    return this.authService.requestPasswordReset(resetDto.email)
+  }
+
+  @Post('reset-password')
+  resetPassword(@Body() resetDto: Record<string, string>) {
+    return this.authService.resetPassword(
+      resetDto.token,
+      resetDto.password,
+      resetDto.confirmPassword,
+    )
+  }
 }

@@ -10,7 +10,24 @@ export class CompanyService {
     private readonly stripeService: StripeService,
   ) {}
 
-  create(createCompanyDto: Prisma.CompanyCreateInput) {
+  async create(createCompanyDto: Prisma.CompanyCreateInput) {
+    if (createCompanyDto.email) {
+      const existingCompanyByEmail = await this.databaseService.company.findUnique({
+        where: { email: createCompanyDto.email as string },
+      })
+      if (existingCompanyByEmail) {
+        return { error: 'Adresse email déjà utilisée' }
+      }
+    }
+
+    if (createCompanyDto.phone) {
+      const existingCompanyByPhone = await this.databaseService.company.findUnique({
+        where: { phone: createCompanyDto.phone as string },
+      })
+      if (existingCompanyByPhone) {
+        return { error: 'Numéro de téléphone déjà utilisé' }
+      }
+    }
     return this.databaseService.company.create({
       data: createCompanyDto,
     })

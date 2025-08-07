@@ -1,17 +1,29 @@
 import { Injectable } from '@nestjs/common'
 import { Prisma } from 'generated/prisma'
 import { DatabaseService } from 'src/database/database.service'
+const bcrypt = require('bcryptjs')
 
 @Injectable()
 export class UsersService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   async create(createUserDto: Prisma.UserCreateInput) {
-    const existingUser = await this.databaseService.user.findUnique({
-      where: { email: createUserDto.email as string },
-    })
-    if (existingUser) {
-      return { error: 'Adresse email déjà utilisée' }
+    if (createUserDto.email) {
+      const existingUserByEmail = await this.databaseService.user.findUnique({
+        where: { email: createUserDto.email as string },
+      })
+      if (existingUserByEmail) {
+        return { error: 'Adresse email déjà utilisée' }
+      }
+    }
+
+    if (createUserDto.phone) {
+      const existingUserByPhone = await this.databaseService.user.findUnique({
+        where: { phone: createUserDto.phone as string },
+      })
+      if (existingUserByPhone) {
+        return { error: 'Numéro de téléphone déjà utilisé' }
+      }
     }
     return this.databaseService.user.create({
       data: createUserDto,
@@ -57,6 +69,14 @@ export class UsersService {
     return this.databaseService.user.update({
       where: { id },
       data: updateUserDto,
+    })
+  }
+
+  async updatePassword(id: string, newPassword: string) {
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+    return this.databaseService.user.update({
+      where: { id },
+      data: { password: hashedPassword },
     })
   }
 
