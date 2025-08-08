@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { MailerService } from '@nestjs-modules/mailer'
 import { ConfigService } from '@nestjs/config'
+import { RecommandationService } from 'src/recommandation/recommandation.service'
 
 export interface WelcomeEmailData {
   email: string
@@ -27,6 +28,7 @@ export class EmailService {
   constructor(
     private readonly mailerService: MailerService,
     private readonly configService: ConfigService,
+    private readonly recommandationService: RecommandationService,
   ) {}
 
   async sendWelcomeEmail(data: WelcomeEmailData): Promise<boolean> {

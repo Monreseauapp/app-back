@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { join } from 'path'
 import { EmailService } from './email.service'
 import { EmailController } from './email.controller'
+import { RecommandationService } from 'src/recommandation/recommandation.service'
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import { EmailController } from './email.controller'
       inject: [ConfigService],
     }),
   ],
-  providers: [EmailService],
+  providers: [EmailService, RecommandationService],
   controllers: [EmailController],
   exports: [EmailService],
 })
