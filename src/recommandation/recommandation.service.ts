@@ -6,7 +6,7 @@ import { DatabaseService } from 'src/database/database.service'
 export class RecommandationService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  create(createRecommandationDto: Prisma.RecommandationCreateInput) {
+  create(createRecommandationDto: Prisma.RecommandationUncheckedCreateInput) {
     return this.databaseService.recommandation.create({
       data: createRecommandationDto,
     })
