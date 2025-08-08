@@ -213,11 +213,11 @@ model Recommandation {
   rejectionReasonRecipient String?   @db.VarChar(255)
   RecoStateCompany         RecoState @default(PENDING)
   rejectionReasonCompany   String?   @db.VarChar(255)
-  companyId                String
+  companyId                String?
   initiatorId              String
   recipientId              String?
   retentionDate            DateTime?
-  initiator                User      @relation("RecoInitiateur", fields: [initiatorId], references: [id])
+  initiator                User?      @relation("RecoInitiateur", fields: [initiatorId], references: [id])
   recipient                User?     @relation("RecoDestinataire", fields: [recipientId], references: [id])
   company                  Company?  @relation(fields: [companyId], references: [id])
 }

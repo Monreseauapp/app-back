@@ -15,7 +15,10 @@ export class RecommandationController {
   constructor(private readonly recommandationService: RecommandationService) {}
 
   @Post()
-  create(@Body() createRecommandationDto: Prisma.RecommandationCreateInput) {
+  create(
+    @Body()
+    createRecommandationDto: Prisma.RecommandationUncheckedCreateInput,
+  ) {
     return this.recommandationService.create(createRecommandationDto)
   }
 
