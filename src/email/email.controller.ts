@@ -90,6 +90,25 @@ export class SendPlainTextEmailDto {
   text: string
 }
 
+export class SendRecommendationStatusEmailDto {
+  @IsNotEmpty({ message: "L'identifiant de recommandation est requis" })
+  @IsString()
+  recommendationId: string
+
+  @IsEmail({}, { message: 'Email invalide' })
+  to: string
+
+  @IsNotEmpty({ message: 'Le statut est requis' })
+  @IsString()
+  status: string
+
+  @IsNotEmpty({ message: 'Le nom est requis' })
+  @IsString()
+  @MaxLength(100)
+  name: string
+}
+
+
 @Controller('email')
 export class EmailController {
   constructor(private readonly emailService: EmailService) {}
@@ -223,6 +242,35 @@ export class EmailController {
 
       return {
         message: 'Email texte envoyé avec succès',
+        success: true,
+      }
+    } catch (error) {
+      if (error instanceof InternalServerErrorException) {
+        throw error
+      }
+      throw new BadRequestException("Données invalides pour l'envoi d'email")
+    }
+  }
+
+
+  @Post('recommendation-status')
+  @HttpCode(HttpStatus.OK)
+  async sendRecommendationStatusEmail(
+    @Body() sendRecommendationStatusEmailDto: SendRecommendationStatusEmailDto,
+  ) {
+    try {
+      const success = await this.emailService.sendRecommendationStatusEmail(
+        sendRecommendationStatusEmailDto,
+      )
+
+      if (!success) {
+        throw new InternalServerErrorException(
+          "Impossible d'envoyer l'email de statut de recommandation",
+        )
+      }
+
+      return {
+        message: 'Email de statut de recommandation envoyé avec succès',
         success: true,
       }
     } catch (error) {

@@ -22,6 +22,37 @@ export class RecommandationService {
     })
   }
 
+  findRecoexpanded(id: string) {
+    return this.databaseService.recommandation.findUnique({
+      where: { id },
+      include: {
+        initiator: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        recipient: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        company: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    })
+  }
+
   findByRecipientId(recipientId: string) {
     return this.databaseService.recommandation.findMany({
       where: { recipientId },

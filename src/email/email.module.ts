@@ -6,6 +6,7 @@ import { join } from 'path'
 import { EmailService } from './email.service'
 import { EmailController } from './email.controller'
 import { RecommandationService } from 'src/recommandation/recommandation.service'
+import { UsersService } from 'src/users/users.service'
 
 @Module({
   imports: [
