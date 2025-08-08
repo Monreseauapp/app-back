@@ -202,27 +202,27 @@ export class EmailController {
     }
   }
 
-  @Post('plain-text')
+  @Post('recommendation')
   @HttpCode(HttpStatus.OK)
-  async sendPlainTextEmail(
-    @Body() sendPlainTextEmailDto: SendPlainTextEmailDto,
+  async sendRecommendationEmail(
+    @Body()
+    body: {
+      recommendationId: string
+      status: string
+    },
   ) {
     try {
-      const { to, subject, text } = sendPlainTextEmailDto
-      const success = await this.emailService.sendPlainTextEmail(
-        to,
-        subject,
-        text,
-      )
+      const { recommendationId, status } = body
+      const success = await this.emailService.sendRecommendationStatusEmail(body)
 
       if (!success) {
         throw new InternalServerErrorException(
-          "Impossible d'envoyer l'email texte",
+          "Impossible d'envoyer l'email de recommandations",
         )
       }
 
       return {
-        message: 'Email texte envoyé avec succès',
+        message: 'Email de recommandations envoyé avec succès',
         success: true,
       }
     } catch (error) {

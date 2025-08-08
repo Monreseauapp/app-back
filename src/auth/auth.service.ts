@@ -126,7 +126,11 @@ export class AuthService {
     })
   }
 
-  async resetPassword(token: string, newPassword: string, confirmPassword: string): Promise<void> {
+  async resetPassword(
+    token: string,
+    newPassword: string,
+    confirmPassword: string,
+  ): Promise<void> {
     let payload: { email: string; id: string; reset?: boolean }
     try {
       payload = await this.jwtService.verifyAsync(token, {

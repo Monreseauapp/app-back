@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common'
-import { RecommandationService } from './recommandation.service'
-import { RecommandationController } from './recommandation.controller'
+import { Module, forwardRef } from '@nestjs/common';
+import { RecommandationService } from './recommandation.service';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
-  controllers: [RecommandationController],
+  imports: [EmailModule],
   providers: [RecommandationService],
+  exports: [RecommandationService],
 })
 export class RecommandationModule {}

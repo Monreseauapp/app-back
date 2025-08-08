@@ -9,7 +9,7 @@ export class UsersService {
 
   async create(createUserDto: Prisma.UserCreateInput) {
     const existingUser = await this.databaseService.user.findUnique({
-      where: { email: createUserDto.email as string },
+      where: { email: createUserDto.email },
     })
     if (existingUser) {
       return { error: 'Adresse email déjà utilisée' }

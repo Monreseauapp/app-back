@@ -1,6 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { MailerService } from '@nestjs-modules/mailer'
 import { ConfigService } from '@nestjs/config'
+import { RecommandationService } from 'src/recommandation/recommandation.service'
+import { UsersService } from 'src/users/users.service'
 
 export interface WelcomeEmailData {
   email: string
@@ -20,6 +22,12 @@ export interface ContactEmailData {
   message: string
 }
 
+// Interface simplifiée
+export interface RecommendationStatusEmailData {
+  recommendationId: string
+  status: string
+}
+
 @Injectable()
 export class EmailService {
   private readonly logger = new Logger(EmailService.name)
@@ -27,6 +35,8 @@ export class EmailService {
   constructor(
     private readonly mailerService: MailerService,
     private readonly configService: ConfigService,
+    private readonly recommandationService: RecommandationService,
+    private readonly usersService: UsersService,
   ) {}
 
   async sendWelcomeEmail(data: WelcomeEmailData): Promise<boolean> {
@@ -146,23 +156,68 @@ export class EmailService {
     }
   }
 
-  async sendPlainTextEmail(
-    to: string,
-    subject: string,
-    text: string,
+  async sendRecommendationStatusEmail(
+    data: RecommendationStatusEmailData,
   ): Promise<boolean> {
     try {
-      await this.mailerService.sendMail({
-        to: to,
-        subject: subject,
-        text: text,
+      const recommendation = await this.recommandationService.findRecoexpanded(data.recommendationId)
+
+      if (!recommendation) {
+        this.logger.warn(`Recommandation ${data.recommendationId} non trouvée`)
+        return false
+      }
+
+      if (!recommendation.initiator || !recommendation.recipient || !recommendation.company) {
+        this.logger.warn(`Recommandation ${data.recommendationId} n'a pas d'initiateur, destinataire ou entreprise`)
+        return false
+      }
+
+
+      const recipients = [
+        { 
+          email: recommendation.initiator.email, 
+          name: `${recommendation.initiator.firstName} ${recommendation.initiator.lastName}`, 
+          role: 'initiator' 
+        },
+        { 
+          email: recommendation.recipient.email, 
+          name: `${recommendation.recipient.firstName} ${recommendation.recipient.lastName}`, 
+          role: 'recipient' 
+        },
+        { 
+          email: recommendation.company.email, 
+          name: recommendation.company.name, 
+          role: 'company' 
+        }
+      ]
+
+      const emailPromises = recipients.map(async (recipient) => {
+        return this.mailerService.sendMail({
+          to: recipient.email,
+          subject: `Mise à jour de recommandation - ${data.status}`,
+          template: './recommendation-status',
+          context: {
+            Name: recipient.name,
+            role: recipient.role,
+            recommendationId: data.recommendationId,
+            status: data.status,
+            initiatorName: `${recommendation.initiator.firstName} ${recommendation.initiator.lastName}`,
+            recipientName: recommendation.recipient
+              ? `${recommendation.recipient.firstName} ${recommendation.recipient.lastName}`
+              : '',
+            companyName: recommendation.company?.name ?? '',
+            year: new Date().getFullYear(),
+          },
+        })
       })
 
-      this.logger.log(`Email texte envoyé à ${to}`)
+      await Promise.all(emailPromises)
+
+      this.logger.log(`Emails de changement d'état envoyés pour la recommandation ${data.recommendationId}`)
       return true
     } catch (error) {
       this.logger.error(
-        `Erreur lors de l'envoi de l'email texte à ${to}:`,
+        `Erreur lors de l'envoi des emails de changement d'état pour la recommandation ${data.recommendationId}:`,
         error,
       )
       return false

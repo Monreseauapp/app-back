@@ -1,14 +1,18 @@
-import { Module } from '@nestjs/common'
-import { MailerModule } from '@nestjs-modules/mailer'
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { join } from 'path'
-import { EmailService } from './email.service'
-import { EmailController } from './email.controller'
+import { Module } from '@nestjs/common';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { join } from 'path';
+import { EmailService } from './email.service';
+import { EmailController } from './email.controller';
+import { RecommandationModule } from 'src/recommandation/recommandation.module';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
     ConfigModule,
+    RecommandationModule, // Importer le module qui contient RecommandationService
+    UsersModule,          // Importer le module qui contient UsersService
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -37,7 +41,7 @@ import { EmailController } from './email.controller'
       inject: [ConfigService],
     }),
   ],
-  providers: [EmailService],
+  providers: [EmailService], // ✅ Seulement EmailService, pas les autres services
   controllers: [EmailController],
   exports: [EmailService],
 })

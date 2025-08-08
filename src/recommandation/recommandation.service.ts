@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common'
-import { Prisma } from 'generated/prisma'
+import { Prisma, RecoState } from 'generated/prisma'
 import { DatabaseService } from 'src/database/database.service'
+import { EmailService } from 'src/email/email.service'
 
 @Injectable()
 export class RecommandationService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(
+    private readonly databaseService: DatabaseService,
+    private readonly emailService: EmailService,
+  ) {}
 
   create(createRecommandationDto: Prisma.RecommandationCreateInput) {
     return this.databaseService.recommandation.create({
@@ -19,6 +23,37 @@ export class RecommandationService {
   findOne(id: string) {
     return this.databaseService.recommandation.findUnique({
       where: { id },
+    })
+  }
+
+  findRecoexpanded(id: string) {
+    return this.databaseService.recommandation.findUnique({
+      where: { id },
+      include: {
+        initiator: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        recipient: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        company: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
     })
   }
 
@@ -166,5 +201,31 @@ export class RecommandationService {
     return this.databaseService.recommandation.delete({
       where: { id },
     })
+  }
+
+  async updateStatus(id: string, newStatus: RecoState, updaterRole: 'initiator' | 'recipient') {
+
+    let updatedRecommandation;
+    
+    if (updaterRole === 'initiator') {
+      updatedRecommandation = await this.databaseService.recommandation.update({
+        where: { id },
+        data: { RecoStateCompany: newStatus },
+      });
+    } else if (updaterRole === 'recipient') {
+      updatedRecommandation = await this.databaseService.recommandation.update({
+        where: { id },
+        data: { RecoStateRecipient: newStatus },
+      });
+    } else {
+      throw new Error('Invalid updater role');
+    }
+
+    await this.emailService.sendRecommendationStatusEmail({
+      recommendationId: id,
+      status: newStatus
+    });
+
+    return updatedRecommandation;
   }
 }
